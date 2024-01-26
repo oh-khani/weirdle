@@ -3,12 +3,17 @@ html,body{
     color: white;
 }
 
+div{
+    color: white;
+}
+
 :root{
     --default: #121213;
     --empty: #3a3a3c;
-    --wrong: #e83f5b;
+    --wrong: #e0b72d;
     --correct: #4cd62b;
 }
+
 header{
     display: flex;
     align-items: center;

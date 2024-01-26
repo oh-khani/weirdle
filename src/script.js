@@ -1,20 +1,15 @@
 //import { testDictionary, realDictionary } from './Dico/dictionnaire.js';
 const dicoTest = [
-    'proue',
-    'zebre',
-    'pomme',
-    'chats',
-    'chien',
-    'singe',
-    'tigre',
-    'fleur',
-    'plage',
-    'arabe'
+    'proue','zebre','pomme',
+    'chats','chien','singe',
+    'tigre','fleur','plage',
+    'arabe','arbre','table',
 ];
 //Changer ici pour changer le dico
 //           \/\/
 const dico = dicoTest;
 const Nombredessai = 6;
+const mots = dico[Math.floor(Math.random() * dico.length)];
 /*
 Mot = choixMot();
 function choixMot() {
@@ -26,24 +21,35 @@ function choixMot() {
 }
 */
 const state = {
-    secret: dico[Math.floor(Math.random() * dico.length)],
-    grid: Array(6)
+    secret: mots,
+    grid: Array(Nombredessai)
         .fill()
-        .map(() => Array(5).fill('')),
+        .map(() => Array(mots.length).fill('')),
     currentRow: 0,
     currentCol: 0,
 };
 
-
+/**
+ * 
+ * Met à jour la grille de jeu avec les lettres entrées par le joueur
+ */
 function update() {
     for (let i = 0; i < state.grid.length; i++) {
         for (let j = 0; j < state.grid[i].length; j++) {
-            const box = document.getElementById(`box${i}${j}`);
+            const box = document.getElementById(`box-${i}-${j}`);
             box.textContent = state.grid[i][j];
         }
     }
 }
 
+/**
+ * 
+ * @param {*} container 
+ * @param {int} row 
+ * @param {int} col 
+ * @param {string} lettre 
+ * dessine une case de la grille
+ */
 function drawBox(container, row, col, lettre='') {
     const box = document.createElement('div');
     box.className = 'box';
@@ -53,6 +59,13 @@ function drawBox(container, row, col, lettre='') {
     return box;
 }
 
+/**
+ * 
+ * @param {*} container 
+ * @param {int} nbessai
+ * @returns void
+ * dessine la grille de jeu avec le nombre d'essai et la longueur du mot
+*/
 function drawGrid(container, nbessai = 6) {
     const longueur = state.secret.length;
     const grid = document.createElement('div');
@@ -65,85 +78,193 @@ function drawGrid(container, nbessai = 6) {
     container.appendChild(grid);
 }
 
+/**
+ * 
+ * Lis les touches du clavier
+ * @returns void
+ */
 function clavier() {
     document.body.onkeydown = (e) => {
         console.log(e.key);
         const lettre = e.key;
+        let mot = '';
         if (lettre === 'Enter') {
-            const mot = getCurrentWord();
-            console.log(`Le mots entre est `+ mot);
-            if (isWord(mot)) {
-                reveal(mot);
-                state.currentRow++;
-                state.currentCol = 0;
-            }else{
-                alert('Ce n\'est pas un mot');
+            if (state.currentCol === 5){
+                mot = getCurrentWord();
+                console.log(`Le mots entré est `+ mot);
+                if (isWord(mot)) {
+                    reveal(mot);
+                    state.currentRow++;
+                }else{
+                    alert('Ce n\'est pas un mot');
+                }
             }
-            if (lettre === 'Backspace') {
-                supprLettre();
-            }
-            if (isLetter(lettre)) {
-                addLettre(lettre);
-            }
-            update();
+        } else if (lettre === 'Backspace') {
+            supprLettre();
+        } else if (isLetter(lettre)) {
+            addLettre(lettre);
         }
+        update();
     }
 }
 
+/**
+ * 
+ * @param {string} mot 
+ * @returns boolean
+ * return true si le mot est dans le dictionnaire
+ */
 function isWord(mot) {return dico.includes(mot);}
+
+/**
+ * 
+ * @param {string} lettre 
+ * @returns boolean
+ * return true si la lettre est dans l'alphabet
+ */
 function isLetter(lettre) {return lettre.length === 1 && lettre.match(/[a-z]/i);}
+
+/**
+ * 
+ * @param {string} lettre 
+ * @returns void
+ * ajoute la lettre dans la grille
+ */
 function addLettre(lettre) {
     if (state.currentCol === 5) return;
     state.grid[state.currentRow][state.currentCol] = lettre;
-    state.currentCol++;    
+    state.currentCol++;
+
+    console.log('Colonne: n°'+ state.currentCol);
+    console.log('Ligne: n°'+ state.currentRow);
 }
+
+/**
+ * @returns void
+ * supprime la lettre courante de la grille
+ */
 function supprLettre() {
     if (state.currentCol === 0) return;
     state.grid[state.currentRow][state.currentCol - 1] = '';
     state.currentCol--;
+
+    
 }
 
+/**
+ * 
+ * @param {string} mot 
+ * @returns void
+ * révèle le mot
+ */
 function reveal(mot) {
+    const durre = 500; //ms
     const row = state.currentRow;
+    //animation de révélation
     for (let i = 0; i < mot.length; i++) {
-        const box = document.getElementById(`box${row}${i}`);
+        const box = document.getElementById(`box-${row}-${i}`);
         const lettre = box.textContent;
-        const durre = 500; //ms
+        const numOfOccurrencesSecret = getNumOfOccurrencesInWord(state.secret,lettre);
+          const numOfOccurrencesGuess = getNumOfOccurrencesInWord(mot, lettre);
+          const letterPosition = getPositionOfOccurrence(mot, lettre, i);
+      
         setTimeout(() => {
-            if (lettre === box.secret[i]) {
-                box.classList.add('correct');
-            }else if (box.secret.includes(lettre)){
-                box.classList.add('wrong');
-            }else{
+            if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
+                letterPosition > numOfOccurrencesSecret) {
                 box.classList.add('empty');
-            }
-        }, i * durre);
+              } else {
+                if (lettre === state.secret[i]) {
+                  box.classList.add('correct');
+                } else if (state.secret.includes(lettre)) {
+                  box.classList.add('wrong');
+                } else {
+                  box.classList.add('empty');
+                }
+              }
+        }, ((i + 1) * durre) / 2);
         box.classList.add('flip')
         box.style.animationDelay = `${i * durre/2}ms`
     }
-
-    const Win = state.secret === mot;
-    const loose = state.currentRow === state.grid.length;
+    state.current = 0;
 
     setTimeout(() => {
-        if (Win) {
-            alert('Bravo');
-        }else if (loose) {
-            alert(`Perdu!\nLe mot était ${state.secret}.`);
+        if (state.secret === mot) {
+            win();
+        }else if (state.currentRow === state.grid.length) {
+            alert(`Perdu!\nLe mot était ${state.secret[row].join('')}.`);
         }
-    }, durre * mot.length);
+    }, durre * 3);
+    state.currentCol = 0;
 }
 
+/**
+ * 
+ * @param {string} word 
+ * @param {string} letter 
+ * @returns int
+ * retourne le nombre d'occurence de la lettre dans le mot
+ */
+function getNumOfOccurrencesInWord(word, letter) {
+    let result = 0;
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === letter) {
+        result++;
+      }
+    }
+    return result;
+  }
+  
+  /**
+   * 
+   * @param {string} word 
+   * @param {string} letter 
+   * @param {int} position 
+   * @returns int
+   * retourne le nombre d'occurence de la lettre dans le mot jusqu'à la position donnée
+   */
+  function getPositionOfOccurrence(word, letter, position) {
+    let result = 0;
+    for (let i = 0; i <= position; i++) {
+      if (word[i] === letter) {
+        result++;
+      }
+    }
+    return result;
+  }
+  
+
+/**
+ * @returns string
+ * retourne le mot courant
+ */
 function getCurrentWord() {
     return state.grid[state.currentRow].reduce((acc, lettre) => acc + lettre);
 }
 
+/**
+ * @returns void
+ * stop le jeu et affiche le score
+ */
+function win() {
+    const container = document.getElementById('game');
+    const score = document.createElement('div');
+    score.className = 'score';
+    score.textContent = `Vous avez gagné en ${state.currentRow-1} essais`;
+    container.appendChild(score);
+    document.body.onkeydown = () => {};
+}
+
+/**
+ * @returns void
+ * demmare le jeu
+ */
 function start() {
     const container = document.getElementById('game');
+
+    console.log(state.secret);
     
     drawGrid(container, Nombredessai);
     clavier();
-    console.log(state.secret);
 }
 
 start();
