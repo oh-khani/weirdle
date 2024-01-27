@@ -25,6 +25,18 @@ header{
     font-weight: bold;
 }
 
+footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: var(--default);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
 #game{
     display: grid;
     place-items: center;
@@ -34,7 +46,6 @@ header{
 
 .grid{
     display: grid;
-    grid-template-rows: repeat(6, auto);
     grid-template-columns: repeat(5, auto);
 }
 
@@ -76,4 +87,22 @@ header{
 }
 .flip{
     animation: flip 0.5s ease;
+}
+
+
+
+button{
+    padding: 1rem 2rem;
+    background: var(--default);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover{
+    background: var(--empty);
 }

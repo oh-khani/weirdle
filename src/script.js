@@ -3,7 +3,7 @@ const dicoTest = [
     'proue','zebre','pomme',
     'chats','chien','singe',
     'tigre','fleur','plage',
-    'arabe','arbre','table',
+    'arabe','arbre','table'
 ];
 //Changer ici pour changer le dico
 //           \/\/
@@ -63,7 +63,7 @@ function drawBox(container, row, col, lettre='') {
  * 
  * @param {*} container 
  * @param {int} nbessai
- * @returns void
+ * @returns {void}
  * dessine la grille de jeu avec le nombre d'essai et la longueur du mot
 */
 function drawGrid(container, nbessai = 6) {
@@ -81,11 +81,11 @@ function drawGrid(container, nbessai = 6) {
 /**
  * 
  * Lis les touches du clavier
- * @returns void
  */
 function clavier() {
     document.body.onkeydown = (e) => {
         console.log(e.key);
+        console.log(`Colonea :${state.currentCol}`);
         const lettre = e.key;
         let mot = '';
         if (lettre === 'Enter') {
@@ -93,7 +93,9 @@ function clavier() {
                 mot = getCurrentWord();
                 console.log(`Le mots entré est `+ mot);
                 if (isWord(mot)) {
+                    state.currentCol = 0;
                     reveal(mot);
+                    console.log(`Coloneb :${state.currentCol}`);
                     state.currentRow++;
                 }else{
                     alert('Ce n\'est pas un mot');
@@ -111,7 +113,7 @@ function clavier() {
 /**
  * 
  * @param {string} mot 
- * @returns boolean
+ * @returns {boolean}
  * return true si le mot est dans le dictionnaire
  */
 function isWord(mot) {return dico.includes(mot);}
@@ -119,7 +121,7 @@ function isWord(mot) {return dico.includes(mot);}
 /**
  * 
  * @param {string} lettre 
- * @returns boolean
+ * @returns {boolean}
  * return true si la lettre est dans l'alphabet
  */
 function isLetter(lettre) {return lettre.length === 1 && lettre.match(/[a-z]/i);}
@@ -127,52 +129,48 @@ function isLetter(lettre) {return lettre.length === 1 && lettre.match(/[a-z]/i);
 /**
  * 
  * @param {string} lettre 
- * @returns void
  * ajoute la lettre dans la grille
  */
 function addLettre(lettre) {
-    if (state.currentCol === 5) return;
+    if (state.currentCol === 5) {return;    }
     state.grid[state.currentRow][state.currentCol] = lettre;
+    
     state.currentCol++;
-
     console.log('Colonne: n°'+ state.currentCol);
     console.log('Ligne: n°'+ state.currentRow);
 }
 
 /**
- * @returns void
+ * 
  * supprime la lettre courante de la grille
  */
 function supprLettre() {
     if (state.currentCol === 0) return;
     state.grid[state.currentRow][state.currentCol - 1] = '';
     state.currentCol--;
-
-    
 }
 
 /**
  * 
  * @param {string} mot 
- * @returns void
  * révèle le mot
  */
 function reveal(mot) {
-    const durre = 500; //ms
+    const dure = 500; //ms
     const row = state.currentRow;
     //animation de révélation
     for (let i = 0; i < mot.length; i++) {
         const box = document.getElementById(`box-${row}-${i}`);
         const lettre = box.textContent;
         const numOfOccurrencesSecret = getNumOfOccurrencesInWord(state.secret,lettre);
-          const numOfOccurrencesGuess = getNumOfOccurrencesInWord(mot, lettre);
-          const letterPosition = getPositionOfOccurrence(mot, lettre, i);
+        const numOfOccurrencesGuess = getNumOfOccurrencesInWord(mot, lettre);
+        const letterPosition = getPositionOfOccurrence(mot, lettre, i);
       
         setTimeout(() => {
             if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
                 letterPosition > numOfOccurrencesSecret) {
                 box.classList.add('empty');
-              } else {
+            } else {
                 if (lettre === state.secret[i]) {
                   box.classList.add('correct');
                 } else if (state.secret.includes(lettre)) {
@@ -180,28 +178,30 @@ function reveal(mot) {
                 } else {
                   box.classList.add('empty');
                 }
-              }
-        }, ((i + 1) * durre) / 2);
+            }
+        }, ((i + 1) * dure) / 2);
         box.classList.add('flip')
-        box.style.animationDelay = `${i * durre/2}ms`
+        box.style.animationDelay = `${i * dure/2}ms`
     }
-    state.current = 0;
 
     setTimeout(() => {
         if (state.secret === mot) {
-            win();
+            printScore('Gagné ! vous avez trouve en ' + (state.currentRow) + ' essais');
+            shareScoreOnTwitter(true);
+            reload();
         }else if (state.currentRow === state.grid.length) {
-            alert(`Perdu!\nLe mot était ${state.secret[row].join('')}.`);
+            printScore(`Perdu ! Le mot était ${state.secret}`);
+            shareScoreOnTwitter(false);
+            reload();
         }
-    }, durre * 3);
-    state.currentCol = 0;
+    }, dure * 3);
 }
 
 /**
  * 
  * @param {string} word 
  * @param {string} letter 
- * @returns int
+ * @returns {int}
  * retourne le nombre d'occurence de la lettre dans le mot
  */
 function getNumOfOccurrencesInWord(word, letter) {
@@ -219,7 +219,7 @@ function getNumOfOccurrencesInWord(word, letter) {
    * @param {string} word 
    * @param {string} letter 
    * @param {int} position 
-   * @returns int
+   * @returns {int}
    * retourne le nombre d'occurence de la lettre dans le mot jusqu'à la position donnée
    */
   function getPositionOfOccurrence(word, letter, position) {
@@ -234,29 +234,63 @@ function getNumOfOccurrencesInWord(word, letter) {
   
 
 /**
- * @returns string
- * retourne le mot courant
+ * @returns {string} retourne le mot courant
  */
 function getCurrentWord() {
     return state.grid[state.currentRow].reduce((acc, lettre) => acc + lettre);
 }
 
 /**
- * @returns void
+ * 
  * stop le jeu et affiche le score
- */
-function win() {
+*/
+function printScore(msg) {
     const container = document.getElementById('game');
     const score = document.createElement('div');
     score.className = 'score';
-    score.textContent = `Vous avez gagné en ${state.currentRow-1} essais`;
+    score.textContent = msg;
+    const button = document.createElement('button');
+    button.textContent = 'Rejouer';
     container.appendChild(score);
+}
+
+/**
+ * 
+ * @param {boolean} gagne 
+ * creer un bouton pour partager le score sur twitter (pas X)
+*/
+function shareScoreOnTwitter(gagne) {
+    const score = state.currentRow;
+    let url = ``;
+    if (gagne)  {
+        url = `https://twitter.com/intent/tweet?text=J'ai%20trouvé%20le%20mot%20en%20${score}%20essai`;
+    } else {
+        url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${state.secret}`;
+    }
+    console.log(url);
+    const button = document.createElement('button');
+    button.textContent = 'Partager sur Twitter';
+    button.onclick = () => window.open(url, '_blank');
+    const container = document.getElementById('game');
+    container.appendChild(button);
     document.body.onkeydown = () => {};
 }
 
 /**
- * @returns void
- * demmare le jeu
+ * 
+ * creer un bouton pour rejouer
+ */
+function reload() {
+    const button = document.createElement('button');
+    button.textContent = 'Rejouer';
+    button.onclick = () => window.location.reload();
+    const container = document.getElementById('game');
+    container.appendChild(button);
+}
+
+/**
+ * 
+ * dessine la grille et lance le jeu
  */
 function start() {
     const container = document.getElementById('game');
