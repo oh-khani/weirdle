@@ -1,4 +1,4 @@
-//import { testDictionary, realDictionary } from './Dico/dictionnaire.js';
+//import {realDictionary } from './Dico/dictionnaire.js';
 const dicoTest = [
     'proue','zebre','pomme',
     'chats','chien','singe',
