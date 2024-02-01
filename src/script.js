@@ -1,4 +1,4 @@
-//import {realDictionary } from './Dico/dictionnaire.js';
+//import { realDictionary } from './Dico/dictionnaire.js';
 const dicoTest = [
     'proue','zebre','pomme',
     'chats','chien','singe',
@@ -70,8 +70,8 @@ function drawGrid(container, nbessai = 6) {
     const longueur = state.secret.length;
     const grid = document.createElement('div');
     grid.className = 'grid';
-    for (let row = 0; row < longueur; row++) {
-        for (let col = 0; col < nbessai; col++) {
+    for (let row = 0; row < longueur+1; row++) {
+        for (let col = 0; col < nbessai-1; col++) {
             drawBox(grid, row, col);
         }
     }
@@ -85,17 +85,14 @@ function drawGrid(container, nbessai = 6) {
 function clavier() {
     document.body.onkeydown = (e) => {
         console.log(e.key);
-        console.log(`Colonea :${state.currentCol}`);
         const lettre = e.key;
         let mot = '';
         if (lettre === 'Enter') {
             if (state.currentCol === 5){
                 mot = getCurrentWord();
-                console.log(`Le mots entré est `+ mot);
                 if (isWord(mot)) {
                     state.currentCol = 0;
                     reveal(mot);
-                    console.log(`Coloneb :${state.currentCol}`);
                     state.currentRow++;
                 }else{
                     alert('Ce n\'est pas un mot');
@@ -189,7 +186,7 @@ function reveal(mot) {
             printScore('Gagné ! vous avez trouve en ' + (state.currentRow) + ' essais');
             shareScoreOnTwitter(true);
             reload();
-        }else if (state.currentRow === state.grid.length) {
+        } if (state.currentRow === Nombredessai) {
             printScore(`Perdu ! Le mot était ${state.secret}`);
             shareScoreOnTwitter(false);
             reload();
@@ -294,9 +291,7 @@ function reload() {
  */
 function start() {
     const container = document.getElementById('game');
-
     console.log(state.secret);
-    
     drawGrid(container, Nombredessai);
     clavier();
 }
