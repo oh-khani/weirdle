@@ -174,14 +174,21 @@ function reveal(mot) {
     }
 
     setTimeout(() => {
+        let message = '';
+        let gagne = null;
         if (state.secret === mot) { 
-            printScore('Gagné ! vous avez trouve en ' + (state.currentRow) + ' essais');
-            shareScoreOnTwitter(true);
-            reload();
+            message ='Gagné ! vous avez trouve en ' + (state.currentRow) + ' essais';
+            gagne = true;
         }else if(state.currentRow === Nombredessai) {
-            printScore(`Perdu ! Le mot était ${state.secret}`);
-            shareScoreOnTwitter(false);
+            message = `Perdu ! Le mot était ${state.secret}`;
+            gagne = false;
+        }
+        
+        if (state.secret === mot || state.currentRow === Nombredessai) {
+            printScore(message);
             reload();
+            wiktionarySource();
+            shareScoreOnTwitter(gagne);
         }
     }, dure * 3);
 }
@@ -245,6 +252,18 @@ function printScore(msg) {
 
 /**
  * 
+ * Cree le 
+ */
+function wiktionarySource() {
+    const button = document.createElement('button');
+    button.textContent = 'Definition';
+    button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${state.secret}`, '_blank');
+    const container = document.getElementById('game');
+    container.appendChild(button)
+}
+
+/**
+ * 
  * @param {boolean} gagne 
  * creer un bouton pour partager le score sur twitter (pas X)
 */
@@ -274,6 +293,7 @@ function reload() {
     button.onclick = () => window.location.reload();
     const container = document.getElementById('game');
     container.appendChild(button);
+
 }
 
 /**
