@@ -1,17 +1,18 @@
-import {realDictionary } from './Dico/dictionnaire.js';
-/*
+//import json mots
+import data from './Dico/dictionnaire.json' assert { type: 'json' };
+
 const dicoTest = [
     'proue','zebre','pomme',
     'chats','chien','singe',
     'tigre','fleur','plage',
     'arabe','arbre','table'
   ];
-*/
-//Changer ici pour changer le dico
+
+//Changer ici pour changer le dico (dicoTest ou data.mots)
 //           \/\/
-const dico = realDictionary;
+const dico = data.mots;
 const Nombredessai = 6;
-const mots = (dico[Math.floor(Math.random() * dico.length)]).toLowerCase();
+const mots = dico[Math.floor(Math.random() * dico.length)].toLowerCase();
 
 const state = {
     secret: mots,
@@ -77,7 +78,6 @@ function drawGrid(container, nbessai = 6) {
  */
 function clavier() {
     document.body.onkeydown = (e) => {
-        console.log(e.key);
         const lettre = e.key;
         let mot = '';
         if (lettre === 'Enter') {
@@ -87,6 +87,8 @@ function clavier() {
                     state.currentCol = 0;
                     reveal(mot);
                     state.currentRow++;
+                }else if (mot  === 'hideo') {
+                    document.body.style.backgroundImage = "url('./src/img/hideo-kojima-credits.gif')";
                 }else{
                     alert('Ce n\'est pas un mot');
                 }
@@ -172,11 +174,11 @@ function reveal(mot) {
     }
 
     setTimeout(() => {
-        if (state.secret === mot) {
+        if (state.secret === mot) { 
             printScore('Gagné ! vous avez trouve en ' + (state.currentRow) + ' essais');
             shareScoreOnTwitter(true);
             reload();
-        } if (state.currentRow === Nombredessai) {
+        }else if(state.currentRow === Nombredessai) {
             printScore(`Perdu ! Le mot était ${state.secret}`);
             shareScoreOnTwitter(false);
             reload();
@@ -254,7 +256,6 @@ function shareScoreOnTwitter(gagne) {
     } else {
         url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${state.secret}`;
     }
-    console.log(url);
     const button = document.createElement('button');
     button.textContent = 'Partager sur Twitter';
     button.onclick = () => window.open(url, '_blank');
@@ -281,7 +282,6 @@ function reload() {
  */
 function start() {
     const container = document.getElementById('game');
-    console.log(state.secret.toLowerCase());
     drawGrid(container, Nombredessai);
     clavier();
 }
