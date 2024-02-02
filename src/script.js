@@ -1,28 +1,40 @@
 //import json mots
-import data from './Dico/dictionnaire.json' assert { type: 'json' };
-
+//import data from './Dico/dictionnaire.json' assert { type: 'json' };
 const dicoTest = [
     'proue','zebre','pomme',
     'chats','chien','singe',
     'tigre','fleur','plage',
     'arabe','arbre','table'
   ];
+  
+  const Nombredessai = 6;
+  let dico;
+  let mot = '';
 
-//Changer ici pour changer le dico (dicoTest ou data.mots)
-//           \/\/
-const dico = data.mots;
-const Nombredessai = 6;
-const mots = dico[Math.floor(Math.random() * dico.length)].toLowerCase();
+function importJson(){
+    fetch("./Dico/dictionnaire.json")
+    .then((res) => res.json())
+    .then((data) => {
+        //Changer ici pour changer le dico (dicoTest ou data.mots)
+        //       \/\/
+        dico = data.mots;
+        
+        return dico;
+    });
+}
+
+dico = importJson();
+mot = dico[Math.floor(Math.random() * dico.length)].toLowerCase();
 
 const state = {
-    secret: mots,
+    secret: mot,
     grid: Array(Nombredessai)
-        .fill()
-        .map(() => Array(mots.length).fill('')),
+    .fill()
+    .map(() => Array(mot.length).fill('')),
     currentRow: 0,
     currentCol: 0,
 };
-
+    
 /**
  * 
  * Met à jour la grille de jeu avec les lettres entrées par le joueur
