@@ -302,6 +302,7 @@ function reload() {
  */
 function start() {
     const container = document.getElementById('game');
+    console.log(mots);
     drawGrid(container, Nombredessai);
     clavier();
 }
