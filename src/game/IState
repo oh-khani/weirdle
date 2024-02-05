@@ -1,0 +1,7 @@
+interface IState 
+{
+  secret: string;
+  grid: string[][];
+  currentRow: number;
+  currentCol: number;
+}
