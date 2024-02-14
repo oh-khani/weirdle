@@ -1,4 +1,0 @@
-interface IModeJeu
-{
-    play() : void;
-}
