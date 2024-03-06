@@ -1,4 +1,4 @@
-export class IState 
+export class State 
 {
   secret;
   grid;
