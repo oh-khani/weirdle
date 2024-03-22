@@ -1,5 +1,4 @@
 <?php 
-require_once 'config.php';
 require_once 'src/assets/header.php';
 require_once 'src/assets/navbar.php'; 
 ?>
