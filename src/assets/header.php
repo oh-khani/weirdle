@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php 
+        if ($_SERVER['REQUEST_URI'] === "/weirdle/") {
+            $style = "src/style.css";
+        } else {
+            $style = "../style.css";
+        }
+    ?>
+    <link rel="stylesheet" href=<?= $style; ?>>
+    <title>Weirdle</title>
+</head>
+<body>
+    <header>
+        <a href="/weirdle/"><h1>Weirdle</h1></a>
+    </header>
