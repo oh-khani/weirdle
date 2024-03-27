@@ -28,7 +28,7 @@ export class Wordle
             currentRow: 0,
             currentCol: 0
         };
-        //this.mode = new ModeJeu();
+        //this.#mode = new ModeJeu();
     }
 
     setMode(mode){this.#mode = mode; }
