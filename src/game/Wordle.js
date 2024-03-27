@@ -11,37 +11,38 @@ export class Wordle
     #mode;// : ModeJeu;
     #state; //: State;
     #dico; //: string[] = data.mots;
-    #mot;// : string;
+    #mot = 'tests';// : string;
     #nombreEssai = 6;
 
 
     constructor()
     {
-        this.dico = data.mots;
-        this.mot = this.dico[Math.floor(Math.random() * this.dico.length)].toLowerCase();
-        this.state = {
-            secret: this.mot,
-            grid: Array(this.nombreEssai).fill([]).map(() => Array(this.mot.length).fill('')),
+        this.#dico = data.mots;
+        this.#mot = this.#dico[Math.floor(Math.random() * this.#dico.length)].toLowerCase();
+        this.#state = {
+            secret: this.#mot,
+            grid: Array(this.#nombreEssai).fill().map(() => Array(this.#mot.length).fill()),
             //grid: Array(this.#nombreEssai).fill().map(() => Array(this.#mot.length).fill('')),
+            
+
             currentRow: 0,
             currentCol: 0
         };
-        console.log(this.mot);
         //this.mode = new ModeJeu();
     }
 
-    setMode(mode){this.mode = mode; }
-    getMode(){return this.mode;}
+    setMode(mode){this.#mode = mode; }
+    getMode(){return this.#mode;}
 
     /**
      * 
      * Met à jour la grille de jeu avec les lettres entrées par le joueur
      */
     #update() {
-        for (let i = 0; i < this.state.grid.length; i++) {
-            for (let j = 0; j < this.state.grid[i].length; j++) {
+        for (let i = 0; i < this.#state.grid.length; i++) {
+            for (let j = 0; j < this.#state.grid[i].length; j++) {
                 const box = document.getElementById(`box-${i}-${j}`);
-                box.textContent = this.state.grid[i][j];
+                box.textContent = this.#state.grid[i][j];
             }
         }
     }
@@ -71,7 +72,7 @@ export class Wordle
      * dessine la grille de jeu avec le nombre d'essai et la longueur du mot
     */
     #drawGrid(container, nbessai = 6) {
-        const longueur = this.state.secret.length;
+        const longueur = this.#state.secret.length;
         const grid = document.createElement('div');
         grid.className = 'grid';
         for (let row = 0; row < longueur+1; row++) {
@@ -82,7 +83,7 @@ export class Wordle
         container.appendChild(grid);
     }
 
-    /**
+    /** 
      * 
      * Lis les touches du clavier
      */
@@ -91,12 +92,12 @@ export class Wordle
             const lettre = e.key;
             let mot = '';
             if (lettre === 'Enter') {
-                if (this.state.currentCol === 5){
+                if (this.#state.currentCol === 5){
                     mot = this.getCurrentWord();
                     if (this.#isWord(mot)) {
-                        this.state.currentCol = 0;
+                        this.#state.currentCol = 0;
                         this.reveal(mot);
-                        this.state.currentRow++;
+                        this.#state.currentRow++;
                     }else if (mot  === 'hideo') {
                         document.body.style.backgroundImage = "url('./src/img/hideo-kojima-credits.gif')";
                     }else{
@@ -118,7 +119,7 @@ export class Wordle
      * @returns {boolean}
      * return true si le mot est dans le dictionnaire
      */
-    #isWord(mot) {return this.dico.includes(mot.toUpperCase());}
+    #isWord(mot) {return this.#dico.includes(mot.toUpperCase());}
 
     /**
      * 
@@ -134,9 +135,10 @@ export class Wordle
      * ajoute la lettre dans la grille
      */
     #addLettre(lettre) {
-        if (this.state.currentCol === 5) {return;    }
-        this.state.grid[this.state.currentRow][this.state.currentCol] = lettre;
-        this.state.currentCol++;
+        if (this.#state.currentCol === 5) {return;    }
+        this.#state.grid[this.#state.currentRow][this.#state.currentCol] = lettre;
+        this.#state.currentCol++;
+
     }
 
     /**
@@ -144,9 +146,9 @@ export class Wordle
      * supprime la lettre courante de la grille
      */
     #supprLettre() {
-        if (this.state.currentCol === 0) return;
-        this.state.grid[this.state.currentRow][this.state.currentCol - 1] = '';
-        this.state.currentCol--;
+        if (this.#state.currentCol === 0) return;
+        this.#state.grid[this.#state.currentRow][this.#state.currentCol - 1] = '';
+        this.#state.currentCol--;
     }
 
     /**
@@ -156,12 +158,12 @@ export class Wordle
      */
     reveal(mot) {
         const dure = 500; //ms
-        const row = this.state.currentRow;
+        const row = this.#state.currentRow;
         //animation de révélation
         for (let i = 0; i < mot.length; i++) {
             const box = document.getElementById(`box-${row}-${i}`);
             const lettre = box.textContent;
-            const numOfOccurrencesSecret = this.#getNumOfOccurrencesInWord(this.state.secret,lettre);
+            const numOfOccurrencesSecret = this.#getNumOfOccurrencesInWord(this.#state.secret,lettre);
             const numOfOccurrencesGuess = this.#getNumOfOccurrencesInWord(mot, lettre);
             const letterPosition = this.#getPositionOfOccurrence(mot, lettre, i);
         
@@ -170,9 +172,9 @@ export class Wordle
                     letterPosition > numOfOccurrencesSecret) {
                     box.classList.add('empty');
                 } else {
-                    if (lettre === this.state.secret[i]) {
+                    if (lettre === this.#state.secret[i]) {
                     box.classList.add('correct');
-                    } else if (this.state.secret.includes(lettre)) {
+                    } else if (this.#state.secret.includes(lettre)) {
                     box.classList.add('wrong');
                     } else {
                     box.classList.add('empty');
@@ -186,15 +188,15 @@ export class Wordle
         setTimeout(() => {
             let message = '';
             let gagne = false;
-            if (this.state.secret === mot) { 
-                message ='Gagné ! vous avez trouve en ' + (this.state.currentRow) + ' essais';
+            if (this.#state.secret === mot) { 
+                message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
                 gagne = true;
-            }else if(this.state.currentRow === this.nombreEssai) {
-                message = `Perdu ! Le mot était ${this.state.secret}`;
+            }else if(this.#state.currentRow === this.#nombreEssai) {
+                message = `Perdu ! Le mot était ${this.#state.secret}`;
                 gagne = false;
             }
             
-            if (this.state.secret === mot || this.state.currentRow === this.nombreEssai) {
+            if (this.#state.secret === mot || this.#state.currentRow === this.#nombreEssai) {
                 this.#printScore(message);
                 this.reload();
                 this.#wiktionarySource();
@@ -243,7 +245,7 @@ export class Wordle
      * @returns {string} retourne le mot courant
      */
     getCurrentWord() {
-        return this.state.grid[this.state.currentRow].reduce((acc, lettre) => acc + lettre);
+        return this.#state.grid[this.#state.currentRow].reduce((acc, lettre) => acc + lettre);
     }
 
     /**
@@ -267,7 +269,7 @@ export class Wordle
     #wiktionarySource() {
         const button = document.createElement('button');
         button.textContent = 'Definition';
-        button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${this.state.secret}`, '_blank');
+        button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${this.#state.secret}`, '_blank');
         const container = document.getElementById('game');
         container.appendChild(button)
     }
@@ -278,12 +280,12 @@ export class Wordle
      * creer un bouton pour partager le score sur twitter (pas X)
     */
     #shareScoreOnTwitter(gagne) {
-        const score = this.state.currentRow;
+        const score = this.#state.currentRow;
         let url = ``;
         if (gagne)  {
             url = `https://twitter.com/intent/tweet?text=J'ai%20trouvé%20le%20mot%20en%20${score}%20essai`;
         } else {
-            url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${this.state.secret}`;
+            url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${this.#state.secret}`;
         }
         const button = document.createElement('button');
         button.textContent = 'Partager sur Twitter';
@@ -312,8 +314,7 @@ export class Wordle
      */
     startGame() {
         const container = document.getElementById('game');
-        console.log(this.#mot);
-        this.#drawGrid(container, this.nombreEssai); 
+        this.#drawGrid(container, this.#nombreEssai); 
         this.#clavier();
 
         //TODO: Appeler le mode de jeu
