@@ -29,6 +29,16 @@ header{
     font-weight: bold;
 }
 
+#titre{
+    text-decoration: none;
+    color: white;
+}
+
+a h1 {
+    text-decoration: none;
+    color: red;
+}
+
 nav {
   background-color: #333;
   display: flex;

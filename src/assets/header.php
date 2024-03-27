@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php 
-        if ($_SERVER['REQUEST_URI'] === "/weirdle/") {
+        if ($_SERVER['REQUEST_URI'] === "/~p2301285/weirdle/") {
             $style = "src/style.css";
         } else {
             $style = "../style.css";
@@ -15,5 +15,5 @@
 </head>
 <body>
     <header>
-        <a href="/weirdle/"><h1>Weirdle</h1></a>
+        <a id="titre" href="/~p2301285/weirdle/"><h1>Weirdle</h1></a>
     </header>
