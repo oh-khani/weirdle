@@ -1,6 +1,10 @@
 import data from '../Dico/dictionnaire.json' assert { type: 'json' };
 import { State } from './State.js';
+//Modes de jeu
 import { ModeJeu } from './game_modes/ModeJeu.js';
+import { Chronometre } from './game_modes/Chronometre.js';
+import { Invisible } from './game_modes/Invisible.js'
+
 
 //Importe tous les modes de jeu
 //const files = await import.meta.glob("./game_modes/ModeJeu/*.js");
@@ -13,7 +17,7 @@ export class Wordle
     #dico; //: string[] = data.mots;
     #mot = 'tests';// : string;
     #nombreEssai = 6;
-
+    #gagne = false;
 
     constructor()
     {
@@ -28,7 +32,8 @@ export class Wordle
             currentRow: 0,
             currentCol: 0
         };
-        //this.#mode = new ModeJeu();
+        this.#mode = new ModeJeu(this);
+        console.log(this.#mot);
     }
 
     setMode(mode){this.#mode = mode; }
@@ -187,20 +192,18 @@ export class Wordle
 
         setTimeout(() => {
             let message = '';
-            let gagne = false;
-            if (this.#state.secret === mot) { 
-                message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
-                gagne = true;
-            }else if(this.#state.currentRow === this.#nombreEssai) {
-                message = `Perdu ! Le mot était ${this.#state.secret}`;
-                gagne = false;
+            //let gagne = false;
+            if (this.#state.secret === mot) { //Partie Gagnee
+                //message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
+                this.#gagne = true;
+            }else if(this.#state.currentRow === this.#nombreEssai) { //Partie Perdu
+                //message = `Perdu ! Le mot était ${this.#state.secret}`;
+                this.#gagne = false;
             }
             
+            //Fin de partie
             if (this.#state.secret === mot || this.#state.currentRow === this.#nombreEssai) {
-                this.#printScore(message);
-                this.reload();
-                this.#wiktionarySource();
-                this.#shareScoreOnTwitter(gagne);
+                this.endGame();
             }
         }, dure * 3);
     }
@@ -318,9 +321,22 @@ export class Wordle
         this.#clavier();
 
         //TODO: Appeler le mode de jeu
+        this.#mode.play();
     }
 
+    /**
+     * Met fin a la partie 
+     */
     endGame(){
-        //TODO: Deplacer des morceaux du code provenant de la methode reveal() ici
+        console.log("Partie terminee!");
+        let message;
+        if(this.#gagne == true) message ='Gagné ! vous avez trouvé en ' + (this.#state.currentRow) + ' essais';
+        else message = `Perdu ! Le mot était ${this.#state.secret}`;
+
+        this.#mode.stop();
+        this.#printScore(message);
+        this.reload();
+        this.#wiktionarySource();
+        this.#shareScoreOnTwitter(this.#gagne);
     }
 }

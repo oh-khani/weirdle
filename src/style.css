@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
 html,body{
     background: var(--default);
     color: white;
@@ -32,9 +34,13 @@ footer{
     padding: 1rem 2rem;
     background: var(--default);
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-family: "Merriweather", serif;
+    font-weight: 300;
+    font-style: normal;
+
+    position:fixed;
+    bottom: 0px;
+
 }
 
 #game{
@@ -105,4 +111,23 @@ button{
 
 button:hover{
     background: var(--empty);
+}
+
+h1{
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#chrono{
+    font-family: "Merriweather", serif;
+    font-weight: 1000;
+    font-style: normal;
+    text-align: center;
+}
+
+.score{
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
 }
