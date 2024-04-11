@@ -3,6 +3,7 @@
 html,body{
     background: var(--default);
     color: white;
+    background: radial-gradient(circle at center, #252525 0%,#000000 100%);
 }
 
 div{
@@ -20,7 +21,7 @@ header{
     display: flex;
     align-items: center;
     padding: 1rem 2rem;
-    background: var(--default);
+    /*background: var(--default);*/
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
@@ -32,7 +33,7 @@ footer{
     align-items: center;
     justify-content: center;
     padding: 1rem 2rem;
-    background: var(--default);
+    /*background: var(--default);*/
     color: white;
     font-family: "Merriweather", serif;
     font-weight: 300;
@@ -131,3 +132,4 @@ h1{
     font-weight: 700;
     font-style: normal;
 }
+
