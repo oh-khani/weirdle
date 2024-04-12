@@ -15,5 +15,5 @@
 </head>
 <body>
     <header>
-        <a href="/~p2301285/weirdle/"><h1>Weirdle</h1></a>
+        <a id="titre" href="/~p2301285/weirdle/"><h1>Weirdle</h1></a>
     </header>
