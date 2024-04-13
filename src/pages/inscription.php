@@ -27,25 +27,17 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
         $stmt = dbInsert($query, ['pseudo' => $pseudo, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
 
         $query = "SELECT idUtilisateur, role FROM Weirdle_Utilisateur WHERE pseudo = :pseudo";
-        var_dump(dbQuery($query, ['pseudo' => $pseudo])->fetch());
-        var_dump(dbQuery($query, ['pseudo' => $pseudo])->fetch()["idUtilisateur"]);
         $idUtilisateur = dbQuery($query, ['pseudo' => $pseudo])->fetch()['idUtilisateur'];
         $role = dbQuery($query, ['pseudo' => $pseudo])->fetch()['role'];
 
-        $control = true;
         for ($i=1; $i <= 4; $i++) { 
             $query = "INSERT INTO Weirdle_Score (idUtilisateur, modeJeu, score) VALUES (:idUtilisateur, $i, 0)";
             $stmt2 = dbInsert($query, ['idUtilisateur' => $idUtilisateur]);
-            if (!$stmt2) {
-                $control = false;
-            }
         }
 
-        if ($stmt && $control) {
-            $_SESSION['user'] = ['pseudo' => $pseudo, 'role' => $role];
-
-            $message = 'Inscription réussie';
-            $error = false;
+        if ($stmt) {
+            $_SESSION['user'] = ['pseudo' => $pseudo, 'role' => $role, 'idUtilisateur' => $idUtilisateur];
+            echo "<script>window.location.replace('./profil.php');</script>";
         } else {
             $message = 'Erreur lors de l\'inscription';
             $error = true;
@@ -69,8 +61,8 @@ if (!isset($_SESSION['user'])){ ?>
         </div>
         <button type="submit">S'inscrire</button>
     </form>
-<?php }else { ?>
-
-<?php }
+<?php }else {
+    echo "<script>window.location.replace('./inscription.php');</script>";
+    }
 if (isset($message) && isset($error)) Message($message, $error);
 require_once '../assets/footer.php';
