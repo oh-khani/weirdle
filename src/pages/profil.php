@@ -15,9 +15,15 @@ $scores = $stmt->fetchAll();
 $query = 'SELECT idMode, modeJeu FROM weirdle_modejeu';
 $stmt = dbQuery($query);
 $modeJeux = $stmt->fetchAll();
+
+$query = 'SELECT * FROM weirdle_role';
+$stmt = dbQuery($query);
+$roles = $stmt->fetchAll();
+$role = $roles[$_SESSION['user']['role'] - 1]['Role'];
 ?>
 
-<h1>Profil de <?= $_SESSION['user']['pseudo'] ?></h1>
+<h1>Profil de <?= strtoupper($_SESSION['user']['pseudo']) ?></h1>
+<h2>Role: <?= strtoupper($role) ?></h2>
 <h2>Score</h2>
 <table>
     <thead>
