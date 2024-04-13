@@ -1,5 +1,6 @@
 <nav>
     <?php 
+
     $pages = [
         'liste.php' => 'Liste des mots',
         /*
@@ -21,8 +22,8 @@
     <ul class="navbar-right">
         <?php
         if (isset($_SESSION['user'])) {
-            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php'>Profil</a></li>";
-            echo "<li><a href='/~p2301285/weirdle/src/pages/connexion.php'>Déconnexion</a></li>";
+            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php'>".$_SESSION['user']['pseudo']."</a></li>";
+            echo "<li><a href='/~p2301285/weirdle/src/pages/deconnexion.php'>Déconnexion</a></li>";
         } else {
             echo "<li><a href='/~p2301285/weirdle/src/pages/inscription.php'>Inscription</a></li>";
             echo "<li><a href='/~p2301285/weirdle/src/pages/connexion.php'>Connexion</a></li>";

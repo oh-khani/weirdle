@@ -1,8 +1,5 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'p2311069');
-define('DB_USER', 'p2311069');
-define('DB_PASSWORD', '728175');
+require_once 'env.php';
 
 /**
  * Fonction de connexion à la base de données

@@ -7,9 +7,6 @@ require_once '../assets/BDD.php';
 <h1>Inscription</h1>
 
 <?php
-if (isset($_SESSION['user'])) {
-    session_destroy();
-}
 if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['password2'])) {
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
@@ -24,6 +21,7 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
 
     } else if ($password !== $password2) {
         $message = 'Les mots de passe ne correspondent pas';
+        $error = true;
     } else {
         $query = "INSERT INTO Weirdle_Utilisateur (pseudo, password, role) VALUES (:pseudo, :password, 3)";
         $stmt = dbInsert($query, ['pseudo' => $pseudo, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
@@ -35,7 +33,7 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
         $role = dbQuery($query, ['pseudo' => $pseudo])->fetch()['role'];
 
         $control = true;
-        for ($i=1; $i <= 3; $i++) { 
+        for ($i=1; $i <= 4; $i++) { 
             $query = "INSERT INTO Weirdle_Score (idUtilisateur, modeJeu, score) VALUES (:idUtilisateur, $i, 0)";
             $stmt2 = dbInsert($query, ['idUtilisateur' => $idUtilisateur]);
             if (!$stmt2) {
