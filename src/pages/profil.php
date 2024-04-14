@@ -66,15 +66,22 @@ if (isset($_POST['mot'])) {
         $mot = $stmt->fetch();
         if ($mot) {
             Message('Le mot existe déjà', true);
-        }else {
-            if ($_SESSION['user']['role'] != 3) {
-                $query = 'INSERT INTO weirdle_mot (mot) VALUES (:mot)';
-                $stmt = dbInsert($query, ['mot' => $_POST['mot']]);
-            } else {
-                $query = 'INSERT INTO weirdle_demande (mot, idUtilisateur) VALUES (:mot, :idUtilisateur)';
-                $stmt = dbInsert($query, ['mot' => $_POST['mot'], 'idUtilisateur' => strtoupper($_SESSION['user']['idUtilisateur'])]);
+        }else{
+            $query = 'SELECT * FROM weirdle_demande WHERE mot = :mot';
+            $stmt = dbQuery($query, ['mot' => $_POST['mot']]);
+            $mot = $stmt->fetch();
+            if ($mot) {
+                Message('Le mot a déjà été proposé', true);
+            }else{
+                if ($_SESSION['user']['role'] != 3) {
+                    $query = 'INSERT INTO weirdle_mot (mot) VALUES (:mot)';
+                    $stmt = dbInsert($query, ['mot' => $_POST['mot']]);
+                } else {
+                    $query = 'INSERT INTO weirdle_demande (mot, idUtilisateur) VALUES (:mot, :idUtilisateur)';
+                    $stmt = dbInsert($query, ['mot' => $_POST['mot'], 'idUtilisateur' => strtoupper($_SESSION['user']['idUtilisateur'])]);
+                }
+                Message('Mot ajouté', false);
             }
-            Message('Mot ajouté', false);
         }
     }
 }
