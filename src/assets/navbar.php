@@ -3,6 +3,7 @@
 
     $pages = [
         'liste.php' => 'Liste des mots',
+        'leaderboard.php' => 'leaderboard',
         /*
         'lien.php dans le dossier pages' => 'Nom de la page'
         */

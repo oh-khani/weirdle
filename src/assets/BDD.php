@@ -71,16 +71,18 @@ function getScore($idUtilisateur, $modeJeu){
 /**
  * Fonction de récupération du leaderboard
  * @param int $modeJeu Identifiant du mode de jeu
+ * @param int $top Nombre de scores à afficher
  * @return array Tableau contenant les scores et pseudos des joueurs
  */
-function getLeaderBoard($modeJeu = 0){
-    $top = 10;
+function getLeaderBoard($modeJeu = 0, $top = 10){
     if($modeJeu == 0){
-        $query = "SELECT pseudo, score FROM Weirdle_Score JOIN Weirdle_Utilisateur ON Weirdle_Score.idUtilisateur = Weirdle_Utilisateur.idUtilisateur ORDER BY score DESC LIMIT $top";
+        $query = "SELECT pseudo, weirdle_modejeu.modeJeu, score FROM Weirdle_Score JOIN Weirdle_Utilisateur ON Weirdle_Score.idUtilisateur = Weirdle_Utilisateur.idUtilisateur 
+        JOIN weirdle_modejeu ON Weirdle_Score.modeJeu = weirdle_modejeu.idMode ORDER BY score DESC LIMIT $top";
+        $stmt = dbQuery($query);
     }else{
-        $query = "SELECT pseudo, score FROM Weirdle_Score JOIN Weirdle_Utilisateur ON Weirdle_Score.idUtilisateur = Weirdle_Utilisateur.idUtilisateur  WHERE modeJeu = :modeJeu ORDER BY score DESC LIMIT $top";
+        $query = "SELECT pseudo, score FROM Weirdle_Score JOIN Weirdle_Utilisateur ON Weirdle_Score.idUtilisateur = Weirdle_Utilisateur.idUtilisateur WHERE modeJeu = :idMode ORDER BY score DESC LIMIT $top";
+        $stmt = dbQuery($query, ['idMode' => $modeJeu]);
     }
-    $stmt = dbQuery($query, ['modeJeu' => $modeJeu]);
     $leaderBoard = $stmt->fetchAll();
     return $leaderBoard;
 }
