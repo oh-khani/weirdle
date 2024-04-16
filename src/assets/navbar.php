@@ -1,5 +1,12 @@
 <nav>
     <?php 
+    function Active($url) {
+        if ($_SERVER['REQUEST_URI'] === "/~p2301285/weirdle/src/pages/$url") {
+            return 'class="active"';
+        } else {
+            return '';
+        }
+    }
 
     $pages = [
         'liste.php' => 'Liste des mots',
@@ -12,10 +19,7 @@
     echo '<ul>';
      
     foreach ($pages as $url => $title) {
-        $active = '';
-        if ($_SERVER['REQUEST_URI'] === "/~p2301285/weirdle/src/pages/$url") {
-            $active = 'class="active"';
-        } 
+        $active = Active($url);
         echo "<li><a href=/~p2301285/weirdle/src/pages/$url $active>$title</a></li>";
     } ?>
     </ul>
@@ -23,11 +27,14 @@
     <ul class="navbar-right">
         <?php
         if (isset($_SESSION['user'])) {
-            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php'>".$_SESSION['user']['pseudo']."</a></li>";
+            $active = Active('profil.php');
+            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php' $active>".strtoupper($_SESSION['user']['pseudo'])."</a></li>";
             echo "<li><a href='/~p2301285/weirdle/src/pages/deconnexion.php'>Déconnexion</a></li>";
         } else {
-            echo "<li><a href='/~p2301285/weirdle/src/pages/inscription.php'>Inscription</a></li>";
-            echo "<li><a href='/~p2301285/weirdle/src/pages/connexion.php'>Connexion</a></li>";
+            $active = Active('inscription.php');
+            echo "<li><a href='/~p2301285/weirdle/src/pages/inscription.php' $active>Inscription</a></li>";
+            $active = Active('connexion.php');
+            echo "<li><a href='/~p2301285/weirdle/src/pages/connexion.php' $active>Connexion</a></li>";
         }
         ?>
     </ul>
