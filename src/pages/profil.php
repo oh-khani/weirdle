@@ -75,12 +75,13 @@ if (isset($_POST['mot'])) {
             }else{
                 if ($_SESSION['user']['role'] != 3) {
                     $query = 'INSERT INTO weirdle_mot (mot) VALUES (:mot)';
-                    $stmt = dbInsert($query, ['mot' => $_POST['mot']]);
+                    $stmt = dbInsert($query, ['mot' => strtoupper($_POST['mot'])]);
+                    Message('Mot ajouté', false);
                 } else {
                     $query = 'INSERT INTO weirdle_demande (mot, idUtilisateur) VALUES (:mot, :idUtilisateur)';
-                    $stmt = dbInsert($query, ['mot' => $_POST['mot'], 'idUtilisateur' => strtoupper($_SESSION['user']['idUtilisateur'])]);
+                    $stmt = dbInsert($query, ['mot' => strtoupper($_POST['mot']), 'idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
+                    Message('Mot proposé', false);
                 }
-                Message('Mot ajouté', false);
             }
         }
     }
@@ -88,6 +89,7 @@ if (isset($_POST['mot'])) {
 //////////////////////////////////////////
 
 // Affichage des mots demandés si l'utilisateur est admin
+echo "<h2>Mots demandés</h2>";
 if ($_SESSION['user']['role'] == 1) {
     // Suppression et validation des mots demandés si l'utilisateur est admin
     if (isset($_POST['suppr'])) {
@@ -104,14 +106,18 @@ if ($_SESSION['user']['role'] == 1) {
         $stmt = dbInsert($query, ['mot' => $_POST['valider']]);
 
         $query = 'DELETE FROM weirdle_demande WHERE mot = :mot';
-        $stmt = dbExecute($query, ['mot' => $_POST['valider']]); 
+        $stmt = dbExecute($query, ['mot' => $_POST['valider']]);
+        if ($stmt) {
+            Message('Mot validé', false);
+        } else {
+            Message('Erreur lors de la validation', true);
+        }
     }
     //////////////////////////////////////////
     $query = 'SELECT * FROM weirdle_demande';
     $stmt = dbQuery($query);
     $mots = $stmt->fetchAll();
     
-    echo "<h2>Mots demandés</h2>";
     if (count($mots) == 0) {
         Message('Aucun mot demandé', false);
     }else{?>
@@ -128,7 +134,9 @@ if ($_SESSION['user']['role'] == 1) {
                 <?php foreach ($mots as $mot) {
                     $query = 'SELECT pseudo FROM weirdle_utilisateur WHERE idUtilisateur = :idUtilisateur';
                     $stmt = dbQuery($query, ['idUtilisateur' => $mot['idUtilisateur']]);
-                    $pseudo = $stmt->fetch()['pseudo']; ?>
+                    $pseudo = $stmt->fetch()['pseudo']; 
+                    if (!$pseudo) $pseudo = 'Utilisateur supprimé';
+                    ?>
                     <tr>
                         <td><?= $pseudo ?></td>
                         <td><?= $mot['mot'] ?></td>

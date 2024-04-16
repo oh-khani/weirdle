@@ -18,7 +18,6 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
     if ($user) {
         $message = 'Ce pseudo est déjà utilisé';
         $error = true;
-
     } else if ($password !== $password2) {
         $message = 'Les mots de passe ne correspondent pas';
         $error = true;
@@ -30,18 +29,16 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
         $idUtilisateur = dbQuery($query, ['pseudo' => $pseudo])->fetch()['idUtilisateur'];
         $role = dbQuery($query, ['pseudo' => $pseudo])->fetch()['role'];
 
-        for ($i=1; $i <= 4; $i++) { 
-            $query = "INSERT INTO Weirdle_Score (idUtilisateur, modeJeu, score) VALUES (:idUtilisateur, $i, 0)";
-            $stmt2 = dbInsert($query, ['idUtilisateur' => $idUtilisateur]);
-        }
+        $query = "SELECT idMode FROM Weirdle_ModeJeu";
+        $stmt = dbQuery($query);
+        $modeJeux = $stmt->fetchAll();
 
-        if ($stmt) {
-            $_SESSION['user'] = ['pseudo' => $pseudo, 'role' => $role, 'idUtilisateur' => $idUtilisateur];
-            echo "<script>window.location.replace('./profil.php');</script>";
-        } else {
-            $message = 'Erreur lors de l\'inscription';
-            $error = true;
+        foreach ($modeJeux as $modeJeu) {
+            $query = "INSERT INTO Weirdle_Score (idUtilisateur, modeJeu, score) VALUES (:idUtilisateur, :idMode, 0)";
+            $stmt = dbInsert($query, ['idUtilisateur' => $idUtilisateur, 'idMode' => $modeJeu['idMode']]);
         }
+        $_SESSION['user'] = ['pseudo' => $pseudo, 'role' => $role, 'idUtilisateur' => $idUtilisateur];
+        echo "<script>window.location.replace('./profil.php');</script>";
     }
 }
 
