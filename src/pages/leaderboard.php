@@ -1,7 +1,5 @@
 <?php
 require_once '../assets/header.php';
-require_once '../assets/navbar.php';
-require_once '../assets/BDD.php';
 
 echo '<h1>Leaderboard</h1>';
 

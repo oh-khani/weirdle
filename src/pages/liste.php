@@ -1,6 +1,5 @@
 <?php
     require_once '../assets/header.php';
-    require_once '../assets/navbar.php';
 ?>
     <h1>Liste des mots</h1>
     <ul>

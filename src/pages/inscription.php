@@ -1,12 +1,8 @@
 <?php
 require_once '../assets/header.php';
-require_once '../assets/navbar.php';
-require_once '../assets/BDD.php';
-?>
 
-<h1>Inscription</h1>
+echo "<h1>Inscription</h1>";
 
-<?php
 if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['password2'])) {
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];

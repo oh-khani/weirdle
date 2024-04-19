@@ -18,3 +18,6 @@
     <header>
         <a id="titre" href="/~p2301285/weirdle/"><h1>Weirdle</h1></a>
     </header>
+    <?php
+    require_once 'navbar.php';
+    require_once 'BDD.php';

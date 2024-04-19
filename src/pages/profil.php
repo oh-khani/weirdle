@@ -1,7 +1,5 @@
 <?php
 require_once '../assets/header.php';
-require_once '../assets/navbar.php';
-require_once '../assets/BDD.php';
 
 if (!isset($_SESSION['user'])) header('Location: connexion.php'); // Redirection si non connecté
 
