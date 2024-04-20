@@ -8,6 +8,14 @@
         }
     }
 
+    $notif = "";
+    if (isset($_SESSION['user']) && $_SESSION['user']['role'] != 3) {
+        $query = "SELECT COUNT(*) FROM `weirdle_demande`";
+        $stmt = dbQuery($query);
+        $demandes = $stmt->fetch()['COUNT(*)'];
+        $notif = ($demandes > 0) ? " ($demandes)" : "";
+    }
+
     $pages = [
         'liste.php' => 'Liste des mots',
         'leaderboard.php' => 'leaderboard',
@@ -28,7 +36,7 @@
         <?php
         if (isset($_SESSION['user'])) {
             $active = Active('profil.php');
-            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php' $active>".strtoupper($_SESSION['user']['pseudo'])."</a></li>";
+            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php' $active>".strtoupper($_SESSION['user']['pseudo'])."$notif</a></li>";
             echo "<li><a href='/~p2301285/weirdle/src/pages/deconnexion.php'>Déconnexion</a></li>";
         } else {
             $active = Active('inscription.php');
