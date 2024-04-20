@@ -86,9 +86,38 @@ if (isset($_POST['mot'])) {
 }
 //////////////////////////////////////////
 
+// Reinitialisation du mot de passe///////
+echo "<h2>Réinitialisation du mot de passe</h2>";
+?>
+<form method="post" action="profil.php">
+    <div>
+        <label for="reinit">Nouveau mot de passe</label>
+        <input type="password" name="reinit" id="reinit" required>
+    </div>
+    <div>
+        <label for="reinit2">Confirmer le mot de passe</label>
+        <input type="password" name="reinit2" id="reinit2" required>
+    </div>
+    <button type="submit">Réinitialiser</button>
+<?php
+if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
+    if ($_POST['reinit'] == $_POST['reinit2']) {
+        $query = 'UPDATE weirdle_utilisateur SET password = :password WHERE idUtilisateur = :idUtilisateur';
+        $stmt = dbExecute($query, ['password' => password_hash($_POST['reinit'], PASSWORD_DEFAULT), 'idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
+        if ($stmt) {
+            Message('Mot de passe réinitialisé', false);
+        } else {
+            Message('Erreur lors de la réinitialisation', true);
+        }
+    } else {
+        Message('Les mots de passe ne correspondent pas', true);
+    }
+}
+//////////////////////////////////////////
+
 // Affichage des mots demandés si l'utilisateur est admin
-echo "<h2>Mots demandés</h2>";
 if ($_SESSION['user']['role'] == 1) {
+    echo "<h2>Mots demandés</h2>";
     // Suppression et validation des mots demandés si l'utilisateur est admin
     if (isset($_POST['suppr'])) {
         $query = 'DELETE FROM weirdle_demande WHERE Mot = :mot';
