@@ -6,6 +6,7 @@ echo '<h1>Leaderboard</h1>';
 $query = 'SELECT * FROM Weirdle_ModeJeu';
 $stmt = dbQuery($query);
 $modeJeux = $stmt->fetchAll();
+$idModeJeux = array_column($modeJeux, 'idMode');
 ?>
 <form action="leaderboard.php" method="get">
     <select name="mode">
@@ -32,13 +33,14 @@ if (!isset($_GET['mode']) || ($_GET['mode'] == 0)) {
         $scores = getLeaderBoard();
     }
 }
-
+// $affiMode est un booléen qui permet d'afficher ou non la colonne mode de jeu
+$affiMode = ((isset($_GET['mode']) && ($_GET['mode'] == 0)) || !isset($_GET['mode']) || !in_array($_GET['mode'], $idModeJeux));
 ?>
 <table>
     <thead>
         <tr>
             <th>Position</th>
-            <?php if ((isset($_GET['mode']) && ($_GET['mode'] == 0))|| !isset($_GET['mode'])) echo '<th>Mode de jeu</th>'; ?>
+            <?= ($affiMode) ? '<th>Mode de jeu</th>' : '' ?>
             <th>Pseudo</th>
             <th>Score</th>
         </tr>
@@ -47,7 +49,7 @@ if (!isset($_GET['mode']) || ($_GET['mode'] == 0)) {
         <?php foreach ($scores as $score) : ?>
             <tr>
                 <td><?= array_search($score, $scores) + 1 ?></td>
-                <?php if ((isset($_GET['mode']) && ($_GET['mode'] == 0))|| !isset($_GET['mode'])) echo '<td>' . $score['modeJeu'] . '</td>'; ?>
+                <?= ($affiMode) ? '<td>' . $score['modeJeu'] . '</td>' : '' ?>
                 <td><?= $score['pseudo'] ?></td>
                 <td><?= $score['score'] ?></td>
             </tr>

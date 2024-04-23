@@ -22,7 +22,11 @@
         /*
         'lien.php dans le dossier pages' => 'Nom de la page'
         */
-    ]; 
+    ];
+
+    if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 1) {
+        $pages['admin.php'] = 'Admin';
+    }
     
     echo '<ul>';
      

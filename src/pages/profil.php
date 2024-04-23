@@ -41,7 +41,7 @@ $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
 //////////////////////////////////////////
 
 // Formulaire pour ajouter  ou proposer un mot
-if ($_SESSION['user']['role'] != 3) { ?>
+if ($_SESSION['user']['role'] == 1) { ?>
     <h2>Ajouter un mot</h2>
 <?php }else{ ?>
     <h2>Proposer un mot</h2>
@@ -71,7 +71,7 @@ if (isset($_POST['mot'])) {
             if ($mot) {
                 Message('Le mot a déjà été proposé', true);
             }else{
-                if ($_SESSION['user']['role'] != 3) {
+                if ($_SESSION['user']['role'] == 1) {
                     $query = 'INSERT INTO weirdle_mot (mot) VALUES (:mot)';
                     $stmt = dbInsert($query, ['mot' => strtoupper($_POST['mot'])]);
                     Message('Mot ajouté', false);
@@ -99,6 +99,7 @@ echo "<h2>Réinitialisation du mot de passe</h2>";
         <input type="password" name="reinit2" id="reinit2" required>
     </div>
     <button type="submit">Réinitialiser</button>
+</form>
 <?php
 if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
     if ($_POST['reinit'] == $_POST['reinit2']) {
@@ -116,7 +117,7 @@ if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
 //////////////////////////////////////////
 
 // Affichage des mots demandés si l'utilisateur est admin
-if ($_SESSION['user']['role'] == 1) {
+if ($_SESSION['user']['role'] != 3) {
     echo "<h2>Mots demandés</h2>";
     // Suppression et validation des mots demandés si l'utilisateur est admin
     if (isset($_POST['suppr'])) {
