@@ -41,11 +41,11 @@ $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
 //////////////////////////////////////////
 
 // Formulaire pour ajouter  ou proposer un mot
-if ($_SESSION['user']['role'] == 1) { ?>
-    <h2>Ajouter un mot</h2>
-<?php }else{ ?>
-    <h2>Proposer un mot</h2>
-<?php } ?>
+if ($_SESSION['user']['role'] == 1) { 
+    echo "<h2>Ajouter un mot</h2>";
+}else{ 
+    echo "<h2>Proposer un mot</h2>";
+} ?>
 <form method="post" action="profil.php">
     <div>
         <label for="mot">Mot</label>

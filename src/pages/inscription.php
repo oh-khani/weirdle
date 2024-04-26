@@ -55,7 +55,7 @@ if (!isset($_SESSION['user'])){ ?>
         <button type="submit">S'inscrire</button>
     </form>
 <?php }else {
-    echo "<script>window.location.replace('./inscription.php');</script>";
+    echo "<script>window.location.replace('./profil.php');</script>";
     }
 if (isset($message) && isset($error)) Message($message, $error);
 require_once '../assets/footer.php';
