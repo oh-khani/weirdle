@@ -8,11 +8,16 @@ if (isset($_SESSION['user'])) {
 if (isset($_POST['pseudo']) && isset($_POST['password'])) {
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
-    $query = 'SELECT * FROM Weirdle_Utilisateur WHERE pseudo = :pseudo';
+    $query = 'SELECT password, pseudo, img, role, idUtilisateur FROM weirdle_utilisateur WHERE pseudo = :pseudo';
     $stmt = dbQuery($query, ['pseudo' => $pseudo]);
     $user = $stmt->fetch();
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user'] = $user;
+        $_SESSION['user'] = [
+            'pseudo' => $user['pseudo'],
+            'img' => $user['img'],
+            'role' => $user['role'],
+            'idUtilisateur' => $user['idUtilisateur']
+        ];
         echo "<script>window.location.replace('./profil.php');</script>";
     } else {
         $message = 'Pseudo ou mot de passe incorrect';

@@ -33,7 +33,7 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
             $query = "INSERT INTO Weirdle_Score (idUtilisateur, modeJeu, score) VALUES (:idUtilisateur, :idMode, 0)";
             $stmt = dbInsert($query, ['idUtilisateur' => $idUtilisateur, 'idMode' => $modeJeu['idMode']]);
         }
-        $_SESSION['user'] = ['pseudo' => $pseudo, 'role' => $role, 'idUtilisateur' => $idUtilisateur];
+        $_SESSION['user'] = ['pseudo' => $pseudo, 'role' => $role, 'idUtilisateur' => $idUtilisateur, 'img' => 'default.jpg'];
         echo "<script>window.location.replace('./profil.php');</script>";
     }
 }

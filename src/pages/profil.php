@@ -20,6 +20,7 @@ $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
 
 <h1>Profil de <?= strtoupper($_SESSION['user']['pseudo']) ?></h1>
 <h2>Role: <?= strtoupper($role) ?></h2>
+<img src="../img/profil/<?= $_SESSION['user']['img'] ?>" alt="Image de profil" style="width: 100px; height: 100px;">
 <h2>Score</h2>
 <table>
     <thead>
@@ -38,6 +39,72 @@ $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
     </tbody>
 </table>
 <?php
+//////////////////////////////////////////
+
+// Choisir une image de profil ///////
+echo "<h2>Changer l'image de profil</h2>";
+$images = glob('../img/profil/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+if (!in_array('../img/profil/'.$_SESSION['user']['img'], $images)) {
+    $_SESSION['user']['img'] = 'default.jpg';
+}
+?>
+<form method="post" action="profil.php">
+    <div>
+        <label for="image">Image: </label>
+        <?php foreach ($images as $image) {
+            $image = basename($image);
+            if ($image == $_SESSION['user']['img']) {
+                echo "<input type='radio' name='image' value='$image' id='$image' checked>";
+            } else {
+                echo "<input type='radio' name='image' value='$image' id='$image'>";
+            }
+            echo "<label for='$image'><img src='../img/profil/$image' alt='image' style='width: 100px; height: 100px;'></label>";
+        } ?>
+    </div>
+    <button type="submit">Changer</button>
+</form>
+
+<?php
+if (isset($_POST['image'])) {
+    $query = 'UPDATE weirdle_utilisateur SET img = :img WHERE idUtilisateur = :idUtilisateur';
+    $stmt = dbExecute($query, ['img' => $_POST['image'], 'idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
+    if ($stmt) {
+        $_SESSION['user']['img'] = $_POST['image'];
+        Message('Image de profil changée', false);
+    } else {
+        Message('Erreur lors du changement d\'image', true);
+    }
+}
+//////////////////////////////////////////
+
+// Reinitialisation du mot de passe///////
+echo "<h2>Réinitialisation du mot de passe</h2>";
+?>
+<form method="post" action="profil.php">
+    <div>
+        <label for="reinit">Nouveau mot de passe</label>
+        <input type="password" name="reinit" id="reinit" required>
+    </div>
+    <div>
+        <label for="reinit2">Confirmer le mot de passe</label>
+        <input type="password" name="reinit2" id="reinit2" required>
+    </div>
+    <button type="submit">Réinitialiser</button>
+</form>
+<?php
+if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
+    if ($_POST['reinit'] == $_POST['reinit2']) {
+        $query = 'UPDATE weirdle_utilisateur SET password = :password WHERE idUtilisateur = :idUtilisateur';
+        $stmt = dbExecute($query, ['password' => password_hash($_POST['reinit'], PASSWORD_DEFAULT), 'idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
+        if ($stmt) {
+            Message('Mot de passe réinitialisé', false);
+        } else {
+            Message('Erreur lors de la réinitialisation', true);
+        }
+    } else {
+        Message('Les mots de passe ne correspondent pas', true);
+    }
+}
 //////////////////////////////////////////
 
 // Formulaire pour ajouter  ou proposer un mot
@@ -82,36 +149,6 @@ if (isset($_POST['mot'])) {
                 }
             }
         }
-    }
-}
-//////////////////////////////////////////
-
-// Reinitialisation du mot de passe///////
-echo "<h2>Réinitialisation du mot de passe</h2>";
-?>
-<form method="post" action="profil.php">
-    <div>
-        <label for="reinit">Nouveau mot de passe</label>
-        <input type="password" name="reinit" id="reinit" required>
-    </div>
-    <div>
-        <label for="reinit2">Confirmer le mot de passe</label>
-        <input type="password" name="reinit2" id="reinit2" required>
-    </div>
-    <button type="submit">Réinitialiser</button>
-</form>
-<?php
-if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
-    if ($_POST['reinit'] == $_POST['reinit2']) {
-        $query = 'UPDATE weirdle_utilisateur SET password = :password WHERE idUtilisateur = :idUtilisateur';
-        $stmt = dbExecute($query, ['password' => password_hash($_POST['reinit'], PASSWORD_DEFAULT), 'idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
-        if ($stmt) {
-            Message('Mot de passe réinitialisé', false);
-        } else {
-            Message('Erreur lors de la réinitialisation', true);
-        }
-    } else {
-        Message('Les mots de passe ne correspondent pas', true);
     }
 }
 //////////////////////////////////////////

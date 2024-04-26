@@ -10,14 +10,19 @@
 
 <?php
     if (isset($_POST['mot'])) {
-        $query = 'SELECT * FROM weirdle_mot WHERE Mot = :mot';
-        $stmt = dbQuery($query, ['mot' => strtoupper($_POST['mot'])]);
-        $mot = $stmt->fetch();
-        if ($mot) {
-            Message('Mot trouvé', false);
+        if (preg_match('/^[a-zA-Z]{5}$/', $_POST['mot'])) {
+            $query = 'SELECT * FROM weirdle_mot WHERE Mot = :mot';
+            $stmt = dbQuery($query, ['mot' => strtoupper($_POST['mot'])]);
+            $mot = $stmt->fetch();
+            if ($mot) {
+                Message('Mot trouvé', false);
+            } else {
+                Message('Mot non trouvé', true);
+            }
         } else {
-            Message('Mot non trouvé', true);
+            Message('Le mot doit contenir 5 lettres', true);
         }
+
     }
     $query = 'SELECT * FROM weirdle_mot';
     $stmt = dbQuery($query);
