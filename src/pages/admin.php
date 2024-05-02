@@ -3,16 +3,16 @@ require_once '../assets/header.php';
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 1) echo '<script>window.location.href = "/~p2301285/weirdle/src/pages/connexion.php";</script>';
 
 if (isset($_POST['role']) && isset($_POST['pseudo'])) {
-    $query = 'UPDATE Weirdle_Utilisateur SET role = :role WHERE pseudo = :pseudo';
+    $query = 'UPDATE weirdle_utilisateur SET role = :role WHERE pseudo = :pseudo';
     dbQuery($query, ['role' => $_POST['role'], 'pseudo' => $_POST['pseudo']]);
 }
 
 echo '<h1>Administation</h1>';
-$query = 'SELECT pseudo, role FROM Weirdle_Utilisateur';
+$query = 'SELECT pseudo, role FROM weirdle_utilisateur';
 $stmt = dbQuery($query);
 $users = $stmt->fetchAll();
 
-$query = 'SELECT * FROM Weirdle_role';
+$query = 'SELECT * FROM weirdle_role';
 $stmt = dbQuery($query);
 $roles = $stmt->fetchAll();
 ?>

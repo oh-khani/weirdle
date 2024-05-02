@@ -62,7 +62,7 @@ function dbInsert($query, $params = []) {
  * @return array Tableau contenant les informations de l'utilisateur
  */
 function getScore($idUtilisateur, $modeJeu){
-    $query = 'SELECT score FROM Weirdle_Score WHERE idUtilisateur = :idUtilisateur AND modeJeu = :modeJeu';
+    $query = 'SELECT score FROM weirdle_score WHERE idUtilisateur = :idUtilisateur AND modeJeu = :modeJeu';
     $stmt = dbQuery($query, ['idUtilisateur' => $idUtilisateur, 'modeJeu' => $modeJeu]);
     $score = $stmt->fetch();
     return $score['score'];
@@ -76,15 +76,14 @@ function getScore($idUtilisateur, $modeJeu){
  */
 function getLeaderBoard($modeJeu = 0, $top = 10){
     if($modeJeu == 0){
-        $query = "SELECT pseudo, weirdle_modejeu.modeJeu, score FROM Weirdle_Score JOIN Weirdle_Utilisateur ON Weirdle_Score.idUtilisateur = Weirdle_Utilisateur.idUtilisateur 
-        JOIN weirdle_modejeu ON Weirdle_Score.modeJeu = weirdle_modejeu.idMode ORDER BY score DESC LIMIT $top";
+        $query = "SELECT pseudo, weirdle_modejeu.modeJeu, score FROM weirdle_score JOIN weirdle_utilisateur ON weirdle_score.idUtilisateur = weirdle_utilisateur.idUtilisateur 
+        JOIN weirdle_modejeu ON weirdle_score.modeJeu = weirdle_modejeu.idMode ORDER BY score DESC LIMIT $top";
         $stmt = dbQuery($query);
     }else{
-        $query = "SELECT pseudo, score FROM Weirdle_Score JOIN Weirdle_Utilisateur ON Weirdle_Score.idUtilisateur = Weirdle_Utilisateur.idUtilisateur WHERE modeJeu = :idMode ORDER BY score DESC LIMIT $top";
+        $query = "SELECT pseudo, score FROM weirdle_score JOIN weirdle_utilisateur ON weirdle_score.idUtilisateur = weirdle_utilisateur.idUtilisateur WHERE modeJeu = :idMode ORDER BY score DESC LIMIT $top";
         $stmt = dbQuery($query, ['idMode' => $modeJeu]);
     }
-    $leaderBoard = $stmt->fetchAll();
-    return $leaderBoard;
+    return $stmt->fetchAll();
 }
 
 
@@ -92,11 +91,11 @@ function getLeaderBoard($modeJeu = 0, $top = 10){
  * Fonction de mise à jour du score
  * @param int $idUtilisateur Identifiant de l'utilisateur
  * @param int $modeJeu Identifiant du mode de jeu
+ * @param int $i combien il faut augmenter le score (par defaut à 1)
  */
-function updateScore($idUtilisateur, $modeJeu){
-    $query = 'UPDATE Weirdle_Score SET score = score + 1 WHERE idUtilisateur = :idUtilisateur AND modeJeu = :modeJeu';
-    $stmt = dbQuery($query, ['idUtilisateur' => $idUtilisateur, 'modeJeu' => $modeJeu]);
-    return $stmt;
+function updateScore($idUtilisateur, $modeJeu, $i = 1){
+    $query = "UPDATE weirdle_score SET score = score + $i WHERE idUtilisateur = :idUtilisateur AND modeJeu = :modeJeu";
+    return dbQuery($query, ['idUtilisateur' => $idUtilisateur, 'modeJeu' => $modeJeu]);
 }
 
 /**
@@ -105,7 +104,7 @@ function updateScore($idUtilisateur, $modeJeu){
  * @param bool $niv Niveau de message (true = erreur, false = succès)
  */
 function Message($msg, $niv){
-    if($niv == true){
+    if($niv){
         echo '<div class="alert alert-danger" role="alert">'.$msg.'</div>';
     }else{
         echo '<div class="alert alert-success" role="alert">'.$msg.'</div>';

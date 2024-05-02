@@ -4,7 +4,7 @@ require_once '../assets/header.php';
 if (!isset($_SESSION['user'])) header('Location: connexion.php'); // Redirection si non connecté
 
 //Récupération et affichage des informations de l'utilisateur
-$query = 'SELECT * FROM Weirdle_score WHERE idUtilisateur = :idUtilisateur';
+$query = 'SELECT * FROM weirdle_score WHERE idUtilisateur = :idUtilisateur';
 $stmt = dbQuery($query, ['idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
 $scores = $stmt->fetchAll();
 
@@ -20,7 +20,7 @@ $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
 
 <h1>Profil de <?= strtoupper($_SESSION['user']['pseudo']) ?></h1>
 <h2>Role: <?= strtoupper($role) ?></h2>
-<img src="../img/profil/<?= $_SESSION['user']['img'] ?>" alt="Image de profil" style="width: 100px; height: 100px;">
+<img src="../img/profil/<?= $_SESSION['user']['img'] ?>" style="width: 100px; height: 100px;">
 <h2>Score</h2>
 <table>
     <thead>

@@ -22,7 +22,6 @@
         } else {
             Message('Le mot doit contenir 5 lettres', true);
         }
-
     }
     $query = 'SELECT * FROM weirdle_mot';
     $stmt = dbQuery($query);

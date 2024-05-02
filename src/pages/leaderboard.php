@@ -3,7 +3,7 @@ require_once '../assets/header.php';
 
 echo '<h1>Leaderboard</h1>';
 
-$query = 'SELECT * FROM Weirdle_ModeJeu';
+$query = 'SELECT * FROM weirdle_modejeu';
 $stmt = dbQuery($query);
 $modeJeux = $stmt->fetchAll();
 $idModeJeux = array_column($modeJeux, 'idMode');
@@ -13,7 +13,7 @@ $idModeJeux = array_column($modeJeux, 'idMode');
         <option value="0">Tous les modes</option>
         <?php foreach ($modeJeux as $modeJeu) : ?>
             <option value="<?= $modeJeu['idMode'] ?>"><?= $modeJeu['modeJeu'] ?></option>
-        <?php endforeach; ?>      
+        <?php endforeach; ?>
     </select>
     <input type="submit" value="Valider">
 </form>
@@ -21,8 +21,8 @@ $idModeJeux = array_column($modeJeux, 'idMode');
 if (!isset($_GET['mode']) || ($_GET['mode'] == 0)) {
     echo '<h2>Leaderboard de tous les modes</h2>';
     $scores = getLeaderBoard();
-} else {    
-    $query = 'SELECT modeJeu FROM Weirdle_ModeJeu WHERE idMode = :idMode';
+} else {
+    $query = 'SELECT modeJeu FROM weirdle_modejeu WHERE idMode = :idMode';
     $stmt = dbQuery($query, ['idMode' => $_GET['mode']]);
     $modeJeu = $stmt->fetch();
     if ($modeJeu) {
