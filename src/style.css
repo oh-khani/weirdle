@@ -170,7 +170,26 @@ footer{
 
 /* container principâl qui contient tout le jeu */
 .container > *{
-    margin-top: 25px;
+    margin-top: 15px;
+}
+
+/* affiche un message lorsqu'un mot saisi n'est pas valide */
+#tooltip p{
+    font-size: 1.4rem;
+    padding: 10px 20px;
+    display: inline-block;
+    border: 2px solid lightgray;
+    background-color: white;
+    color: #121213;
+    font-weight: 600;
+    border-radius: 50px;
+    
+}
+
+#tooltip{
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 
 #game{

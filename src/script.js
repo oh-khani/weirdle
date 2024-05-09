@@ -101,7 +101,11 @@ function clavier(touche) {
                 }, 1000);
                 document.body.style.backgroundImage = none;
             }else{
-                alert('Ce n\'est pas un mot');
+                let tooltip = document.getElementById("tooltip");
+                tooltip.style.opacity = 1;
+                setTimeout(() => {
+                    tooltip.style.opacity = 0;
+                }, 2000);
             }
         }
     } else if (lettre === 'Backspace' || lettre === "⌫") {
@@ -251,11 +255,16 @@ function reveal(mot) {
     setTimeout(() => {
         let message = '';
         let gagne = null;
-        if (state.secret === mot) { 
-            message ='Gagné ! Vous avez trouvé en ' + (state.currentRow) + ' essais';
-            gagne = true;
+        if (state.secret === mot) {
+            if (state.currentRow > 1){
+                message = 'Gagné ! Vous avez trouvé en ' + (state.currentRow) + ' essais !';
+                gagne = true;
+            } else {
+                message = 'Gagné ! Vous avez trouvé en ' + (state.currentRow) + ' essai !';
+            }
+            
         }else if(state.currentRow === nbEssais) {
-            message = `Perdu ! Le mot était ${state.secret}`;
+            message = `Perdu ! Le mot était ${state.secret}.`;
             gagne = false;
         }
         
@@ -344,7 +353,7 @@ function wiktionarySource() {
 function shareScoreOnTwitter(gagne) {
     const score = state.currentRow;
     let url = ``;
-    if (gagne)  {
+    if (gagne){ 
         url = `https://twitter.com/intent/tweet?text=J'ai%20trouvé%20le%20mot%20en%20${score}%20essai`;
     } else {
         url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${state.secret}`;
