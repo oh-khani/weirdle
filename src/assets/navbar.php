@@ -1,4 +1,4 @@
-<nav>
+<!-- <nav>
     <?php 
     $pages = [
         'liste.php' => 'Liste des mots',
@@ -29,4 +29,4 @@
         }
         ?>
     </ul>
-</nav>
+</nav> -->

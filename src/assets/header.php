@@ -10,10 +10,55 @@
             $style = "../style.css";
         }
     ?>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href=<?= $style; ?>>
     <title>Weirdle</title>
 </head>
 <body>
-    <header>
-        <a id="titre" href="/~p2301285/weirdle/"><h1>Weirdle</h1></a>
-    </header>
+
+    <nav class="navbar">
+        <div class="navbar-left">
+            <?php 
+            $pages = [
+                'liste.php' => 'Liste des mots',
+                /*
+                'lien.php dans le dossier pages' => 'Nom de la page'
+                */
+            ]; 
+            
+            echo '<ul>';
+            
+            foreach ($pages as $url => $title) {
+                $active = '';
+                if ($_SERVER['REQUEST_URI'] === "/~p2301285/weirdle/src/pages/$url") {
+                    $active = 'class="active"';
+                } 
+                echo "<li><a href=/~p2301285/weirdle/src/pages/$url $active>$title</a></li>";
+            } ?>
+            </ul>
+        </div>
+
+        <div class="navbar-center">
+            <a id="titre" href="/~p2301285/weirdle/"><h1 class="dm-sans-titre">Weirdle</h1></a>
+        </div>
+        
+
+        <div class="navbar-right">
+            <ul>
+                <?php
+                if (isset($_SESSION['user'])) {
+                    echo '<li><a href="/~p2301285/weirdle/src/pages/connexion.php">Déconnexion</a></li>';
+                    echo '<li><a href="/~p2301285/weirdle/src/pages/profile.php">Profil</a></li>';
+                } else {
+                    echo '<li><a href="/~p2301285/weirdle/src/pages/register.php">Inscription</a></li>';
+                    echo '<li><a href="/~p2301285/weirdle/src/pages/connexion.php">Connexion</a></li>';
+                }
+                ?>
+            </ul>
+        </div>
+
+    </nav>
