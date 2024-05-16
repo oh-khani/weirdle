@@ -1,6 +1,24 @@
 <?php
 require_once '../assets/header.php';
 
+/**
+ * Fonction de récupération du leaderboard
+ * @param int $modeJeu Identifiant du mode de jeu
+ * @param int $top Nombre de scores à afficher
+ * @return array Tableau contenant les scores et pseudos des joueurs
+ */
+function getLeaderBoard($modeJeu = 0, $top = 10){
+    if($modeJeu == 0){
+        $query = "SELECT pseudo, weirdle_modejeu.modeJeu, score FROM weirdle_score JOIN weirdle_utilisateur ON weirdle_score.idUtilisateur = weirdle_utilisateur.idUtilisateur 
+        JOIN weirdle_modejeu ON weirdle_score.modeJeu = weirdle_modejeu.idMode ORDER BY score DESC LIMIT $top";
+        $stmt = dbQuery($query);
+    }else{
+        $query = "SELECT pseudo, score FROM weirdle_score JOIN weirdle_utilisateur ON weirdle_score.idUtilisateur = weirdle_utilisateur.idUtilisateur WHERE modeJeu = :idMode ORDER BY score DESC LIMIT $top";
+        $stmt = dbQuery($query, ['idMode' => $modeJeu]);
+    }
+    return $stmt->fetchAll();
+}
+
 echo '<h1>Leaderboard</h1>';
 
 $query = 'SELECT * FROM weirdle_modejeu';

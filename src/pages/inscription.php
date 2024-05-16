@@ -17,6 +17,11 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
     } elseif ($password !== $password2) {
         $message = 'Les mots de passe ne correspondent pas';
         $error = true;
+
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $pseudo)) {
+        $message = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre';
+        $error = true;
+        
     } else {
         $query = "INSERT INTO weirdle_utilisateur (pseudo, password, role) VALUES (:pseudo, :password, 3)";
         $stmt = dbInsert($query, ['pseudo' => $pseudo, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
