@@ -98,7 +98,7 @@ export class Wordle
             let mot = '';
             if (lettre === 'Enter') {
                 if (this.#state.currentCol === 5){
-                    mot = this.getCurrentWord();
+                    mot = this.getCurrentWord().toUpperCase();
                     if (this.#isWord(mot)) {
                         this.#state.currentCol = 0;
                         this.reveal(mot);
@@ -140,6 +140,7 @@ export class Wordle
      * ajoute la lettre dans la grille
      */
     #addLettre(lettre) {
+        console.log(lettre);
         if (this.#state.currentCol === 5) {return;    }
         this.#state.grid[this.#state.currentRow][this.#state.currentCol] = lettre;
         this.#state.currentCol++;
@@ -173,8 +174,11 @@ export class Wordle
             const letterPosition = this.#getPositionOfOccurrence(mot, lettre, i);
         
             setTimeout(() => {
+                console.log(numOfOccurrencesGuess > numOfOccurrencesSecret &&
+                    letterPosition > numOfOccurrencesSecret);
                 if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
                     letterPosition > numOfOccurrencesSecret) {
+                       
                     box.classList.add('empty');
                 } else {
                     if (lettre === this.#state.secret[i]) {
@@ -193,7 +197,7 @@ export class Wordle
         setTimeout(() => {
             let message = '';
             //let gagne = false;
-            if (this.#state.secret === mot) { //Partie Gagnee
+            if (this.#state.secret.toUpperCase() === mot.toUpperCase()) { //Partie Gagnee
                 //message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
                 this.#gagne = true;
             }else if(this.#state.currentRow === this.#nombreEssai) { //Partie Perdu
@@ -202,7 +206,7 @@ export class Wordle
             }
             
             //Fin de partie
-            if (this.#state.secret === mot || this.#state.currentRow === this.#nombreEssai) {
+            if (this.#state.secret.toUpperCase() === mot.toUpperCase() || this.#state.currentRow === this.#nombreEssai) {
                 this.endGame();
             }
         }, dure * 3);
