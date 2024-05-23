@@ -1,5 +1,5 @@
-//import json mots
-import data from './Dico/dictionnaire.json' assert { type: 'json' };
+//import json motMystere
+import data from './Dico/dictionnaire.json' with { type: 'json' };
 
 const dicoTest = [
     'proue','zebre','pomme',
@@ -8,17 +8,18 @@ const dicoTest = [
     'arabe','arbre','table'
   ];
 
-//Changer ici pour changer le dico (dicoTest ou data.mots)
+//Changer ici pour changer le dico (dicoTest ou data.motMystere)
 //           \/\/
 const dico = data.mots;
-const Nombredessai = 6;
-const mots = dico[Math.floor(Math.random() * dico.length)].toLowerCase();
+const nbEssais = 6;
+const motMystere = dico[Math.floor(Math.random() * dico.length)].toLowerCase();
+const gameDiv = document.getElementById("game");
 
 const state = {
-    secret: mots,
-    grid: Array(Nombredessai)
+    secret: motMystere,
+    grid: Array(nbEssais)
         .fill()
-        .map(() => Array(mots.length).fill('')),
+        .map(() => Array(motMystere.length).fill('')),
     currentRow: 0,
     currentCol: 0,
 };
@@ -76,31 +77,101 @@ function drawGrid(container, nbessai = 6) {
  * 
  * Lis les touches du clavier
  */
-function clavier() {
-    document.body.onkeydown = (e) => {
-        const lettre = e.key;
-        let mot = '';
-        if (lettre === 'Enter') {
-            if (state.currentCol === 5){
-                mot = getCurrentWord();
-                if (isWord(mot)) {
-                    state.currentCol = 0;
-                    reveal(mot);
-                    state.currentRow++;
-                }else if (mot  === 'hideo') {
-                    document.body.style.backgroundImage = "url('./src/img/hideo-kojima-credits.gif')";
-                }else{
-                    alert('Ce n\'est pas un mot');
-                }
+function clavier(touche) {
+
+    const lettre = touche.key;
+    let mot = '';
+
+    if (lettre === 'Enter' || lettre === "⏎") {
+        if (state.currentCol === 5){
+            mot = getCurrentWord();
+            if (isWord(mot)) {
+                state.currentCol = 0;
+                reveal(mot);
+                state.currentRow++;
+            }else if (mot  === 'hideo') {
+                let counter = 0;
+                document.body.style.backgroundImage = 
+                    "url('./src/img/hideo-kojima-credits.gif')";
+                setInterval(() => {
+                    counter++;
+                    if (counter >= 3){
+                        return;
+                    }
+                }, 1000);
+                document.body.style.backgroundImage = none;
+            }else{
+                let tooltip = document.getElementById("tooltip");
+                tooltip.style.opacity = 1;
+                setTimeout(() => {
+                    tooltip.style.opacity = 0;
+                }, 2000);
             }
-        } else if (lettre === 'Backspace') {
-            supprLettre();
-        } else if (isLetter(lettre)) {
-            addLettre(lettre);
         }
-        update();
+    } else if (lettre === 'Backspace' || lettre === "⌫") {
+        supprLettre();
+    } else if (isLetter(lettre)) {
+        addLettre(lettre.toLowerCase());
     }
+    update();
 }
+
+/**
+ * Affiche l'interface clavier pour pouvoir jouer avec la souris
+ * et voir quelles lettres ont déjà été utilisées
+ */
+function interfaceClavier(){
+    
+    let keyboardContainer = document.getElementById("keyboard");
+
+    let keyboard = [
+        ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "⌫"],
+        ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "⏎"],
+        ["W", "X", "C", "V", "B", "N", "😜", "😂", "😭", "🥳", "🥴"]
+    ];
+
+    for (let i = 0; i < keyboard.length; i++){
+        let currentLigne = keyboard[i];
+        let ligneClavier = document.createElement("div");
+        ligneClavier.classList.add("keyboard-row");
+
+        for (let j = 0; j < currentLigne.length; j++){
+            let toucheClavier = document.createElement("div");
+
+            let touche = currentLigne[j];
+            toucheClavier.textContent = touche;
+
+            if (touche === "⏎"){
+                toucheClavier.setAttribute("id", "Enter");
+                toucheClavier.classList.add("enter-key-tile");
+                toucheClavier.classList.add("keytile");
+            } else if (touche === "⌫"){
+                toucheClavier.setAttribute("id", "Backspace");
+                toucheClavier.classList.add("backspace-key-tile");
+                toucheClavier.classList.add("keytile");
+            } else if ("A" <= touche && touche <= "Z"){
+                toucheClavier.setAttribute("id", "Key" + touche);
+                toucheClavier.classList.add("keytile");
+                
+            } else {
+                toucheClavier.setAttribute("id", "Emoji" + (j-5));
+                toucheClavier.classList.add("keytile");
+            }
+            toucheClavier.addEventListener("click", processKey);
+
+            ligneClavier.appendChild(toucheClavier);
+        }
+        keyboardContainer.appendChild(ligneClavier);
+    }
+    document.addEventListener("keyup", clavier);
+}
+
+/* S'utilise avec interfaceClavier() */
+function processKey(){
+    let lettre = {"key" : this.textContent};
+    clavier(lettre);
+}
+
 
 /**
  * 
@@ -142,7 +213,7 @@ function supprLettre() {
 /**
  * 
  * @param {string} mot 
- * révèle le mot
+ * Affiche dans la grille le mot saisi par l'utilisateur
  */
 function reveal(mot) {
     const dure = 500; //ms
@@ -151,6 +222,9 @@ function reveal(mot) {
     for (let i = 0; i < mot.length; i++) {
         const box = document.getElementById(`box-${row}-${i}`);
         const lettre = box.textContent;
+        
+        const toucheClavier = document.getElementById("Key" + lettre.toUpperCase());
+
         const numOfOccurrencesSecret = getNumOfOccurrencesInWord(state.secret,lettre);
         const numOfOccurrencesGuess = getNumOfOccurrencesInWord(mot, lettre);
         const letterPosition = getPositionOfOccurrence(mot, lettre, i);
@@ -159,13 +233,18 @@ function reveal(mot) {
             if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
                 letterPosition > numOfOccurrencesSecret) {
                 box.classList.add('empty');
+                toucheClavier.classList.add("empty");
             } else {
                 if (lettre === state.secret[i]) {
                   box.classList.add('correct');
+                  toucheClavier.classList.remove("wrong");
+                  toucheClavier.classList.add("correct");
                 } else if (state.secret.includes(lettre)) {
                   box.classList.add('wrong');
+                  toucheClavier.classList.add("wrong");
                 } else {
                   box.classList.add('empty');
+                  toucheClavier.classList.add("empty");
                 }
             }
         }, ((i + 1) * dure) / 2);
@@ -176,15 +255,20 @@ function reveal(mot) {
     setTimeout(() => {
         let message = '';
         let gagne = null;
-        if (state.secret === mot) { 
-            message ='Gagné ! vous avez trouve en ' + (state.currentRow) + ' essais';
-            gagne = true;
-        }else if(state.currentRow === Nombredessai) {
-            message = `Perdu ! Le mot était ${state.secret}`;
+        if (state.secret === mot) {
+            if (state.currentRow > 1){
+                message = 'Gagné ! Vous avez trouvé en ' + (state.currentRow) + ' essais !';
+                gagne = true;
+            } else {
+                message = 'Gagné ! Vous avez trouvé en ' + (state.currentRow) + ' essai !';
+            }
+            
+        }else if(state.currentRow === nbEssais) {
+            message = `Perdu ! Le mot était ${state.secret}.`;
             gagne = false;
         }
         
-        if (state.secret === mot || state.currentRow === Nombredessai) {
+        if (state.secret === mot || state.currentRow === nbEssais) {
             printScore(message);
             reload();
             wiktionarySource();
@@ -198,7 +282,7 @@ function reveal(mot) {
  * @param {string} word 
  * @param {string} letter 
  * @returns {int}
- * retourne le nombre d'occurence de la lettre dans le mot
+ * Retourne le nombre d'occurence de la lettre dans le mot
  */
 function getNumOfOccurrencesInWord(word, letter) {
     let result = 0;
@@ -216,7 +300,7 @@ function getNumOfOccurrencesInWord(word, letter) {
    * @param {string} letter 
    * @param {int} position 
    * @returns {int}
-   * retourne le nombre d'occurence de la lettre dans le mot jusqu'à la position donnée
+   * Retourne le nombre d'occurence de la lettre dans le mot jusqu'à la position donnée
    */
   function getPositionOfOccurrence(word, letter, position) {
     let result = 0;
@@ -238,60 +322,61 @@ function getCurrentWord() {
 
 /**
  * 
- * stop le jeu et affiche le score
+ * Stop le jeu et affiche le score
 */
 function printScore(msg) {
-    const container = document.getElementById('game');
+    const container = document.getElementById('score');
     const score = document.createElement('div');
     score.className = 'score';
     score.textContent = msg;
-    const button = document.createElement('button');
-    button.textContent = 'Rejouer';
     container.appendChild(score);
 }
 
 /**
  * 
- * Cree le 
+ * Crée le bouton pour aller voir la définition sur Wiktionary (le mot peut ne pas exister sur Wiktionary)
  */
 function wiktionarySource() {
     const button = document.createElement('button');
-    button.textContent = 'Definition';
+    button.type = "button";
+    button.textContent = 'Définition';
     button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${state.secret}`, '_blank');
-    const container = document.getElementById('game');
+    const container = document.getElementById('button-container');
     container.appendChild(button)
 }
 
 /**
  * 
  * @param {boolean} gagne 
- * creer un bouton pour partager le score sur twitter (pas X)
+ * Crée un bouton pour partager le score sur Twitter (pas X)
 */
 function shareScoreOnTwitter(gagne) {
     const score = state.currentRow;
     let url = ``;
-    if (gagne)  {
+    if (gagne){ 
         url = `https://twitter.com/intent/tweet?text=J'ai%20trouvé%20le%20mot%20en%20${score}%20essai`;
     } else {
         url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${state.secret}`;
     }
     const button = document.createElement('button');
+    button.type = "button";
     button.textContent = 'Partager sur Twitter';
     button.onclick = () => window.open(url, '_blank');
-    const container = document.getElementById('game');
+    const container = document.getElementById('button-container');
     container.appendChild(button);
     document.body.onkeydown = () => {};
 }
 
 /**
  * 
- * creer un bouton pour rejouer
+ * Crée un bouton pour rejouer
  */
 function reload() {
     const button = document.createElement('button');
+    button.type = "button";
     button.textContent = 'Rejouer';
     button.onclick = () => window.location.reload();
-    const container = document.getElementById('game');
+    const container = document.getElementById('button-container');
     container.appendChild(button);
 
 }
@@ -301,9 +386,9 @@ function reload() {
  * dessine la grille et lance le jeu
  */
 function start() {
-    const container = document.getElementById('game');
-    drawGrid(container, Nombredessai);
-    clavier();
+    console.log(motMystere); // Pour test
+    drawGrid(gameDiv, nbEssais);
+    interfaceClavier();
 }
 
 start();
