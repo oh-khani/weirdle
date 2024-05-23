@@ -1,5 +1,8 @@
-import { Wordle } from '../Wordle';
+import { Wordle } from "../Wordle.js";
 
+/**
+ * Base de tous les modes de jeu. (Classe Parent)
+ */
 export class ModeJeu
 {
     _wordle;
@@ -7,6 +10,14 @@ export class ModeJeu
     constructor(wordle)
     {
         this._wordle = wordle; //Reference au jeu en cours
+        if(this._wordle instanceof Wordle)
+        {
+            console.log("WORDLE FONCTIONNEL");
+        }
+        else
+        {
+            console.log(typeof this._wordle);
+        }
     }
     
     /**
