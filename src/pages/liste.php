@@ -1,17 +1,37 @@
 <?php
     require_once '../assets/header.php';
-    require_once '../assets/navbar.php';
+?>
+
+    <h1>Rechercher un mot</h1>
+    <form action="liste.php" method="post">
+        <input type="text" name="mot" placeholder="Mot à rechercher">
+        <button type="submit">Rechercher</button>
+    </form>
+
+<?php
+    if (isset($_POST['mot'])) {
+        if (preg_match('/^[a-zA-Z]{5}$/', $_POST['mot'])) {
+            $query = 'SELECT * FROM weirdle_mot WHERE Mot = :mot';
+            $stmt = dbQuery($query, ['mot' => strtoupper($_POST['mot'])]);
+            $mot = $stmt->fetch();
+            if ($mot) {
+                Message('Mot trouvé', false);
+            } else {
+                Message('Mot non trouvé', true);
+            }
+        } else {
+            Message('Le mot doit contenir 5 lettres', true);
+        }
+    }
+    $query = 'SELECT * FROM weirdle_mot';
+    $stmt = dbQuery($query);
+    $mots = $stmt->fetchAll();
 ?>
     <h1>Liste des mots</h1>
     <ul>
         <?php
-        $path = '../Dico/dictionnaire.json';
-        $json = file_get_contents($path);
-        $data = json_decode($json, true);
-        $mots = $data['mots'];
-        
         foreach ($mots as $mot) {
-            echo "<li>$mot</li>";
+            echo '<li>' . $mot['Mot'] . '</li>';
         }
         ?>
     </ul>

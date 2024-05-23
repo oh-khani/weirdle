@@ -1,6 +1,5 @@
 <?php 
 require_once 'src/assets/header.php';
-require_once 'src/assets/navbar.php'; 
 ?>
     <div class="container">
         <div id="tooltip"><p>Ce mot n'est pas dans la liste</p></div>
