@@ -11,15 +11,17 @@ if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['passwo
     $query = 'SELECT * FROM weirdle_utilisateur WHERE pseudo = :pseudo';
     $stmt = dbQuery($query, ['pseudo' => $pseudo]);
     $user = $stmt->fetch();
+
     if ($user) {
         $message = 'Ce pseudo est déjà utilisé';
         $error = true;
+        
     } elseif ($password !== $password2) {
         $message = 'Les mots de passe ne correspondent pas';
         $error = true;
 
-    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $pseudo)) {
-        $message = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre';
+    } elseif (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/', $password)) {
+        $message = 'Le mot de passe doit contenir au moins 5 caractères, une majuscule, une minuscule et un chiffre';
         $error = true;
         
     } else {

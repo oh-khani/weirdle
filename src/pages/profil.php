@@ -94,8 +94,8 @@ echo "<h2>Réinitialisation du mot de passe</h2>";
 <?php
 if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
     if ($_POST['reinit'] == $_POST['reinit2']) {
-        // Au moins 8 caractères, une majuscule, une minuscule et un chiffre
-        if (preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $_POST['reinit'])) {
+        // Au moins 5 caractères, une majuscule, une minuscule
+        if (preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/', $_POST['reinit'])) {
             $query = 'UPDATE weirdle_utilisateur SET password = :password WHERE idUtilisateur = :idUtilisateur';
             $stmt = dbExecute($query, ['password' => password_hash($_POST['reinit'], PASSWORD_DEFAULT), 'idUtilisateur' => $_SESSION['user']['idUtilisateur']]);
             if ($stmt) {
@@ -104,7 +104,7 @@ if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
                 Message('Erreur lors de la réinitialisation', true);
             }
         } else {
-            Message('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre', true);
+            Message('Le mot de passe doit contenir au moins 5 caractères, une majuscule et un chiffre', true);
         }
     } else {
         Message('Les mots de passe ne correspondent pas', true);
