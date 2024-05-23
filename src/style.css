@@ -95,64 +95,6 @@ a, a:active, a :visited, a :link{
     background-color: var(--correct);
 }
 
-
-/* header{
-    display: flex;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: var(--default);
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-
-
-a h1 {
-    text-decoration: none;
-    color: white
-}
-
-nav {
-  background-color: #333;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  padding: 10px;
-}
-
-nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
-
-nav ul li {
-  margin-right: 10px;
-}
-
-nav ul li a {
-  color: white;
-  text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-nav ul li a:hover {
-  background-color: var(--wrong);
-}
-
-nav ul li a.active {
-  background-color: var(--correct);
-}
-
-.navbar-right {
-  margin-left: auto;
-} */
-
 footer{
     position: sticky;
     margin-top: auto;

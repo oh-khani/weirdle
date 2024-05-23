@@ -1,5 +1,5 @@
 //import json motMystere
-import data from './Dico/dictionnaire.json' with { type: 'json' };
+import data from './Dico/dictionnaire.json' assert {type: 'json'};
 
 const dicoTest = [
     'proue','zebre','pomme',
@@ -62,6 +62,7 @@ function drawBox(container, row, col, lettre='') {
  * dessine la grille de jeu avec le nombre d'essai et la longueur du mot
 */
 function drawGrid(container, nbessai = 6) {
+    console.log("BONJOUR");
     const longueur = state.secret.length;
     const grid = document.createElement('div');
     grid.className = 'grid';
@@ -121,9 +122,9 @@ function clavier(touche) {
  * et voir quelles lettres ont déjà été utilisées
  */
 function interfaceClavier(){
-    
-    let keyboardContainer = document.getElementById("keyboard");
 
+    let keyboardContainer = document.getElementById("keyboard");
+    
     let keyboard = [
         ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "⌫"],
         ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "⏎"],

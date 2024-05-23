@@ -1,4 +1,4 @@
-<!-- <nav>
+<nav>
     <?php 
     function Active($url) {
         if ($_SERVER['REQUEST_URI'] === "/~p2301285/weirdle/src/pages/$url") {
@@ -50,4 +50,4 @@
         }
         ?>
     </ul>
-</nav> -->
+</nav>
