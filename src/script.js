@@ -79,6 +79,7 @@ function drawGrid(container, nbessai = 6) {
  * Lis les touches du clavier
  */
 function clavier(touche) {
+    console.log(touche);
 
     const lettre = touche.key;
     let mot = '';

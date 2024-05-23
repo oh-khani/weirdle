@@ -9,7 +9,7 @@ require_once 'src/assets/header.php';
         <div id="keyboard"></div>
     </div>
 
-    <script type="module"src="./src/script.js"></script>
+    <script type="module" src="src/game/Game.js"></script>
     
 <?php
 require_once 'src/assets/footer.php';

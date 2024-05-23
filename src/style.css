@@ -1,3 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+html,body{
+    background: var(--default);
+    color: white;
+    background: radial-gradient(circle at center, #252525 0%,#000000 100%);
+}
+
+div{
+    color: white;
+}
+
+:root{
+    --default: #121213;
+    --empty: #3a3a3c;
+    --wrong: #e0b72d;
+    --correct: #4cd62b;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    /*background: var(--default);*/
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    /*background: var(--default);*/
+    color: white;
+    font-family: "Merriweather", serif;
+    font-weight: 300;
+    font-style: normal;
+
+    position:fixed;
+    bottom: 0px;
+
+}
+
+#game{
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 600px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+}
+
+.box{
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--empty);
+    margin: 4px;
+    color: white;
+    text-transform: uppercase;
+    display: grid;
+    place-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2.4rem;
+}
+.box.correct{
+    background-color: var(--correct);
+}
+.box.wrong{
+    background-color: var(--wrong);
+}
+.box.empty{
+    background-color: var(--empty);
+}
+.box.default{
+    background-color: var(--default);
+}
+
+@keyframes flip {
+    0%{
+        transform: scaleY(1);
+    }
+    50%{
+        transform: scaleY(0);
+    }
+    100%{
+        transform: scaleY(1);
+    }
+}
+.flip{
+    animation: flip 0.5s ease;
+}
+
+
+
+button{
+    padding: 1rem 2rem;
+    background: var(--default);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover{
+    background: var(--empty);
+}
+
+h1{
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#chrono{
+    font-family: "Merriweather", serif;
+    font-weight: 1000;
+    font-style: normal;
+    text-align: center;
+}
+
+.score{
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
 body{
     min-height: 100vh;
     display: flex;
@@ -126,6 +261,7 @@ footer{
     font-weight: 600;
     border-radius: 50px;
     
+
 }
 
 #tooltip{
