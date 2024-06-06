@@ -50,7 +50,7 @@ if (!in_array('../img/profil/'.$_SESSION['user']['img'], $images)) {
 ?>
 <form method="post" action="profil.php">
     <div>
-        <label for="image">Image: </label>
+        <span for="image">Image: </span>
         <?php foreach ($images as $image) {
             $image = basename($image);
             if ($image == $_SESSION['user']['img']) {
@@ -232,16 +232,14 @@ if ($_SESSION['user']['role'] != 3) {
 
 // Affichage des demandes d'amis sur la page de profil
 $currentUserId = $_SESSION['user']['idUtilisateur'];
-// print($currentUserId);
-// print_r($_SESSION['user']["pseudo"]);
 
+// Récupère les demandes qui concernent l'utilisateur
 $query = "SELECT A.id, U.pseudo, A.status 
           FROM weirdle_amis_demandes A 
           JOIN weirdle_utilisateur U ON A.sender_id = U.idUtilisateur 
           WHERE A.receiver_id = $currentUserId AND A.status = 'pending'";
 $stmt = dbQuery($query);
 $result = $stmt->fetchAll();
-// print_r($result);
 
 if ($result){
     echo "<h2>Demande d'amis</h2>";
@@ -275,11 +273,11 @@ if (isset($_POST['request_id']) && isset($_POST['action'])){
 // Affichage liste des utilisateurs amis
 echo "<h2>Liste d'amis</h2>"; 
 
-$querry = "SELECT U.idUtilisateur, U.pseudo
+$querry = "SELECT DISTINCT U.idUtilisateur, U.pseudo
             FROM weirdle_utilisateur U 
             JOIN weirdle_amis_demandes A 
-            ON A.receiver_id = U.idUtilisateur
-            WHERE A.status = 'accepted' AND U.idUtilisateur != $currentUserId AND A.sender_id = $currentUserId";
+            ON (A.receiver_id = U.idUtilisateur OR A.sender_id = U.idUtilisateur)
+            WHERE status = 'accepted' AND (A.receiver_id = $currentUserId OR A.sender_id = $currentUserId)";
 
 $stmt = dbQuery($querry);
 $result = $stmt->fetchAll();
@@ -288,7 +286,10 @@ $betterResult = array_column($result, "pseudo", "idUtilisateur");
 if ($result){
     echo "<ul>";
     foreach($result as $user){
-        echo "<li>$user[pseudo]</li>";
+        if ($user["idUtilisateur"] != $currentUserId){
+            echo "<li>$user[pseudo]</li>";
+        }
+        
     }
     echo "</ul>";
 } else {
