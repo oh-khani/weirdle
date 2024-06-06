@@ -230,4 +230,66 @@ if ($_SESSION['user']['role'] != 3) {
 }
 //////////////////////////////////////////
 
+// Affichage des demandes d'amis sur la page de profil
+$currentUserId = $_SESSION['user']['idUtilisateur'];
+// print($currentUserId);
+// print_r($_SESSION['user']["pseudo"]);
+
+$query = "SELECT A.id, U.pseudo, A.status 
+          FROM weirdle_amis_demandes A 
+          JOIN weirdle_utilisateur U ON A.sender_id = U.idUtilisateur 
+          WHERE A.receiver_id = $currentUserId AND A.status = 'pending'";
+$stmt = dbQuery($query);
+$result = $stmt->fetchAll();
+// print_r($result);
+
+if ($result){
+    echo "<h2>Demande d'amis</h2>";
+    foreach ($result as $demande) {
+        echo $demande['pseudo'] . " vous a envoyé une demande d'ami.";
+        echo "<form action='profil.php' method='POST'>";
+        echo "<input type='hidden' name='request_id' value='$demande[id]'>";
+        echo "<button name='action' value='accept' type='submit'>Accepter</button>";
+        echo "<button name='action' value='reject' type='submit'>Refuser</button>";
+        echo "</form>";
+    }
+}
+
+if (isset($_POST['request_id']) && isset($_POST['action'])){
+    $request_id = $_POST['request_id'];
+    $action = $_POST['action'];
+    $status = $action == 'accept' ? 'accepted' : 'rejected';
+
+    $query = "UPDATE weirdle_amis_demandes SET status = '$status' WHERE id = '$request_id'";
+    $stmt = dbQuery($query);
+    if ($stmt) {
+        echo "Demande d'ami " . ($status == 'accepted' ? 'acceptée' : 'refusée') . ".";
+    } else {
+        echo "Erreur lors de la mise à jour de la demande.";
+    }
+
+}
+
+//////////////////////////////////////////
+
+// Affichage liste des utilisateurs amis
+echo "<h2>Liste d'amis</h2>";
+
+
+$querry = "SELECT U.idUtilisateur, U.pseudo
+            FROM weirdle_utilisateur U 
+            JOIN weirdle_amis_demandes A 
+            ON A.receiver_id = U.idUtilisateur
+            WHERE A.status = 'accepted' AND U.idUtilisateur != $currentUserId";
+
+$stmt = dbQuery($querry);
+$result = $stmt->fetchAll();
+$betterResult = array_column($result, "pseudo", "idUtilisateur");
+
+echo "<ul>";
+foreach($result as $user){
+    echo "<li>$user[pseudo]</li>";
+}
+echo "</ul>";
+
 require_once '../assets/footer.php';

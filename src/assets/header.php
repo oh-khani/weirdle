@@ -42,7 +42,8 @@
             }
             $pages = [
                 'liste.php' => 'Liste des mots',
-                'leaderboard.php' => 'leaderboard',
+                'leaderboard.php' => 'Leaderboard',
+                'liste_users.php' => "Utilisateurs"
                 /*
                 'lien.php dans le dossier pages' => 'Nom de la page'
                 */
