@@ -15,6 +15,7 @@ export class Wordle {
     #mot = 'tests'; // : string;
     #nombreEssai = 6;
     #gagne = false;
+    #isEnd = false;
 
     constructor() {
         this.#dico = data.mots;
@@ -106,6 +107,7 @@ export class Wordle {
 
         let mot = '';
 
+        if (this.#isEnd) return;
         if (lettre === 'Enter' || lettre === "⏎") {
             if (this.#state.currentCol === 5) {
                 mot = this.getCurrentWord();
@@ -408,6 +410,7 @@ export class Wordle {
      * Met fin a la partie 
      */
     endGame() {
+        this.#isEnd = true;
         console.log("Partie terminee!");
         let message;
         if (this.#gagne == true) message = 'Gagné ! vous avez trouvé en ' + (this.#state.currentRow) + ' essais';

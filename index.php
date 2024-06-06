@@ -1,8 +1,15 @@
+<header class="hide-header">
 <?php 
 require_once 'src/assets/header.php';
 ?>
+</header>
+
 <head>
     <style>
+        .hide-header{
+            display: none;
+        }
+
         .container {
             display: flex;
             flex-direction: column;
