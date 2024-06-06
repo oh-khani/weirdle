@@ -273,23 +273,27 @@ if (isset($_POST['request_id']) && isset($_POST['action'])){
 //////////////////////////////////////////
 
 // Affichage liste des utilisateurs amis
-echo "<h2>Liste d'amis</h2>";
-
+echo "<h2>Liste d'amis</h2>"; 
 
 $querry = "SELECT U.idUtilisateur, U.pseudo
             FROM weirdle_utilisateur U 
             JOIN weirdle_amis_demandes A 
             ON A.receiver_id = U.idUtilisateur
-            WHERE A.status = 'accepted' AND U.idUtilisateur != $currentUserId";
+            WHERE A.status = 'accepted' AND U.idUtilisateur != $currentUserId AND A.sender_id = $currentUserId";
 
 $stmt = dbQuery($querry);
 $result = $stmt->fetchAll();
 $betterResult = array_column($result, "pseudo", "idUtilisateur");
 
-echo "<ul>";
-foreach($result as $user){
-    echo "<li>$user[pseudo]</li>";
+if ($result){
+    echo "<ul>";
+    foreach($result as $user){
+        echo "<li>$user[pseudo]</li>";
+    }
+    echo "</ul>";
+} else {
+    echo "<p>Vous n'avez pas encore d'amis.</p>";
 }
-echo "</ul>";
+
 
 require_once '../assets/footer.php';
