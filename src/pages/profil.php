@@ -31,6 +31,7 @@
             font-size: 1.5rem;
             margin-bottom: 20px;
             color: #777;
+            font-size: 30px;
         }
 
         .ProfilP img {
