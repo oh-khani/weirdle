@@ -28,20 +28,20 @@ header{
     font-weight: bold;
 }
 
+
 footer{
+    /* position: sticky; */
+    /* margin-top: auto; */
+    /* bottom: 0; */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem 2rem;
-    /*background: var(--default);*/
+    background: var(--navbar);
     color: white;
     font-family: "Merriweather", serif;
     font-weight: 300;
-    font-style: normal;
-
-    position:fixed;
-    bottom: 0px;
-
+    font-size: 1.05rem;
 }
 
 #game{
@@ -230,20 +230,6 @@ a, a:active, a :visited, a :link{
     background-color: var(--correct);
 }
 
-footer{
-    position: sticky;
-    margin-top: auto;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--navbar);
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.05rem;
-    font-weight: bold;
-    
-}
 
 /* container principâl qui contient tout le jeu */
 .container > *{
@@ -380,4 +366,30 @@ button:hover{
 .score{
     font-size: 1.6rem;
     text-align: center;
+}
+
+table{
+    margin-top: 25px;
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    box-shadow: 10px 10px 17px -1px rgba(0,0,0,0.54);
+    margin-left: auto; 
+    margin-right: auto;
+}
+table th, td{
+    border: 1px solid black;
+    padding: 10px;
+}
+table th{
+    background-color: #4e4f50;
+    color: white;
+}
+
+table tr:nth-child(2n){
+    background-color: rgb(173, 173, 173);
+}
+
+table tr:nth-child(2n+1){
+    background-color: lightgrey;
 }
