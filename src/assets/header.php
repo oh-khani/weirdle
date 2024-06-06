@@ -80,7 +80,7 @@ if ($preferences) {
         </div>
 
         <div class="navbar-center">
-            <a draggable='false' id="titre" href="/~p2301285/weirdle/"><h1 class="dm-sans-titre">Weirdle</h1></a>
+            <a draggable='false' id="titre" href="/~p2301285/weirdle/weirdle.php"><h1 class="dm-sans-titre">Weirdle</h1></a>
         </div>
         
 

@@ -32,18 +32,28 @@ require_once 'src/assets/header.php';
             gap: 20px;
         }
 
-        .button {
-            padding: 15px 40px;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: white;
-            background-color: #4cd62b;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .button-container{
+            display: flex; 
+            justify-content: center; 
+            margin-bottom: 20px;
         }
+
+        button, .button-container{
+            padding: 0.5rem 2rem;
+            background-color: rgb(66, 66, 66);
+            border-color: #252525;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        a{
+            text-decoration: none;
+        }
+
 
         .button:hover {
             background-color: #3ab11f;
@@ -54,19 +64,19 @@ require_once 'src/assets/header.php';
 
 <div class="container">
     <h1 class="title">Weirdle</h1>
-    <div class="button-container" style="display: flex; justify-content: center;">
+    <div class="button-container">
         <a href="weirdle.php" class="play-button">Jouer</a>
     </div>
-    <div class="button-container" style="display: flex; justify-content: center;">
+    <div class="button-container">
         <a href="src/pages/connexion.php" class="login-button">Connexion</a>
     </div>
-    <div class="button-container" style="display: flex; justify-content: center;">
+    <div class="button-container">
         <a href="src/pages/liste.php" class="login-button">Liste des mots</a>
     </div>
-    <div class="button-container" style="display: flex; justify-content: center;">
+    <div class="button-container">
         <a href="src/pages/leaderboard.php" class="login-button">Leaderboard</a>
     </div>
-    <div class="button-container" style="display: flex; justify-content: center;">
+    <div class="button-container">
         <a href="src/pages/liste_users.php" class="login-button">Utilisateurs</a>
     </div>
 </div>
