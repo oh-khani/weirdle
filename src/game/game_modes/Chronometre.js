@@ -17,6 +17,7 @@ export class Chronometre extends ModeJeu
         this.#texteChrono.textContent = this.#minute + ' : ' + this.#seconde;
 
         let container = document.getElementsByClassName("container")[0];
+        
         container.appendChild(this.#texteChrono);
         //setTimeout(stop, 3000);
     }
@@ -24,7 +25,7 @@ export class Chronometre extends ModeJeu
     play()
     {
         console.log("CHRONO");
-        this.#timer = setInterval(() => decompter(this.#minute, this.#seconde, this._wordle), 1000);
+        this.#timer = setInterval(() => this.decompter(this.#minute, this.#seconde, this._wordle), 1000);
     }
 
     stop()

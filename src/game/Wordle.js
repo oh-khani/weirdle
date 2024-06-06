@@ -21,7 +21,7 @@ export class Wordle {
 
     constructor() {
         this.#dico = data.mots;
-        this.#mot = this.#dico[Math.floor(Math.random() * this.#dico.length)].toLowerCase();
+        this.#mot = this.#dico[Math.floor(Math.random() * this.#dico.length)].toUpperCase();
         this.#state = {
             secret: this.#mot,
             grid: Array(this.#nombreEssai).fill().map(() => Array(this.#mot.length).fill()),
@@ -130,7 +130,6 @@ export class Wordle {
         } else if (lettre === 'Backspace' || lettre === "⌫") {
             this.supprLettre();
         } else if (this.isLetter(lettre)) {
-            // this.addLettre(lettre.toLowerCase());
             this.addLettre(lettre)
         }
         this.update();
@@ -215,7 +214,7 @@ export class Wordle {
     addLettre(lettre) {
         console.log(lettre);
         if (this.#state.currentCol === 5) { return; }
-        this.#state.grid[this.#state.currentRow][this.#state.currentCol] = lettre;
+        this.#state.grid[this.#state.currentRow][this.#state.currentCol] = lettre.toUpperCase();
         this.#state.currentCol++;
     }
 
@@ -331,7 +330,7 @@ export class Wordle {
      * stop le jeu et affiche le score
      */
     printScore(msg) {
-        const container = document.getElementById('game');
+        const container = document.getElementById('score');
         const score = document.createElement('div');
         score.className = 'score';
         score.textContent = msg;
@@ -348,7 +347,7 @@ export class Wordle {
         const button = document.createElement('button');
         button.textContent = 'Definition';
         button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${this.#state.secret}`, '_blank');
-        const container = document.getElementById('game');
+        const container = document.getElementById('button-container');
         container.appendChild(button)
     }
 
@@ -368,7 +367,7 @@ export class Wordle {
         const button = document.createElement('button');
         button.textContent = 'Partager sur Twitter';
         button.onclick = () => window.open(url, '_blank');
-        const container = document.getElementById('game');
+        const container = document.getElementById('button-container');
         container.appendChild(button);
         document.body.onkeydown = () => { };
     }
@@ -381,7 +380,7 @@ export class Wordle {
         const button = document.createElement('button');
         button.textContent = 'Rejouer';
         button.onclick = () => window.location.reload();
-        const container = document.getElementById('game');
+        const container = document.getElementById('button-container');
         container.appendChild(button);
 
     }

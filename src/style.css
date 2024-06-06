@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
-html,body{
+body{
     background: var(--default);
     color: white;
     background: radial-gradient(circle at center, #252525 0%,#000000 100%);
+    display: flex;
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
 }
 
 div{
@@ -30,17 +34,18 @@ header{
 
 
 footer{
-    /* position: sticky; */
-    /* margin-top: auto; */
-    /* bottom: 0; */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 2rem;
+    margin-top: 10px;
+    padding: 2px;
     background: var(--navbar);
     color: white;
-    font-family: "Merriweather", serif;
-    font-weight: 300;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
     font-size: 1.05rem;
 }
 
@@ -181,7 +186,7 @@ a, a:active, a :visited, a :link{
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 7px 0 rgba(0,0,0,.5);
-    min-width: 400px;
+    /* min-width: 400px; */
     height: 50px;
     
 }
@@ -231,9 +236,13 @@ a, a:active, a :visited, a :link{
 }
 
 
-/* container principâl qui contient tout le jeu */
+/* container principal qui contient tout le jeu */
 .container > *{
     margin-top: 15px;
+}
+
+.container{
+    margin-bottom: 2.5rem; 
 }
 
 /* affiche un message lorsqu'un mot saisi n'est pas valide */
@@ -378,7 +387,7 @@ table{
     margin-right: auto;
 }
 table th, td{
-    border: 1px solid black;
+    border: 1px solid rgb(27, 27, 27);
     padding: 10px;
 }
 table th{
@@ -387,9 +396,9 @@ table th{
 }
 
 table tr:nth-child(2n){
-    background-color: rgb(173, 173, 173);
+    background-color: grey;
 }
 
 table tr:nth-child(2n+1){
-    background-color: lightgrey;
+    background-color: rgb(94, 92, 92);
 }
