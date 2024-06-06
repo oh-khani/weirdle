@@ -1,4 +1,4 @@
-import { ModeJeu } from "./ModeJeu.js";
+import { ModeJeu } from "./BaseGame.js";
 import { Wordle } from "../Wordle.js";
 
 export class Chronometre extends ModeJeu
@@ -15,14 +15,16 @@ export class Chronometre extends ModeJeu
         this.#texteChrono = document.createElement('h2');
         this.#texteChrono.setAttribute("id","chrono");
         this.#texteChrono.textContent = this.#minute + ' : ' + this.#seconde;
-        document.body.appendChild(this.#texteChrono);
+
+        let container = document.getElementsByClassName("container")[0];
+        container.appendChild(this.#texteChrono);
         //setTimeout(stop, 3000);
     }
 
     play()
     {
         console.log("CHRONO");
-        this.#timer = setInterval(() => this.#decompter(this.#minute, this.#seconde, this._wordle), 1000);
+        this.#timer = setInterval(() => decompter(this.#minute, this.#seconde, this._wordle), 1000);
     }
 
     stop()
@@ -31,13 +33,13 @@ export class Chronometre extends ModeJeu
     }
 
 
-    #setChrono(minute, seconde)
+    setChrono(minute, seconde)
     {
         this.#minute = minute;
         this.#seconde = seconde;
     }
 
-    #decompter(minute, seconde, wordle)
+    decompter(minute, seconde, wordle)
     {
         document.getElementById('chrono').textContent = minute + ' : ' + seconde;
         //texteChrono.textContent = seconde;

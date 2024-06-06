@@ -1,4 +1,4 @@
-import { ModeJeu } from "./ModeJeu.js";
+import { ModeJeu } from "./BaseGame.js";
 import { Wordle } from "../Wordle.js";
 
 export class Invisible extends ModeJeu
