@@ -313,3 +313,7 @@ a, a:active, a :visited, a :link{
     text-align: center;
 }
 
+.hidden{
+    display: none;
+}
+

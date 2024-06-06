@@ -7,17 +7,15 @@ export class Chronometre extends BaseGame
     #seconde = 30;
     #timer;
     #texteChrono;
+    #wordle;
 
     constructor(wordle)
     {
         super(wordle);
-        this.tempsAleatoire(0,0, 0, 10); //Temps aleatoire Minute : min -> 1 max -> 1 | Seconde : min -> 0 max -> 59
+        this.#wordle = wordle;
+        this.tempsAleatoire(1,1, 0, 59); //Temps aleatoire Minute : min -> 1 max -> 1 | Seconde : min -> 0 max -> 59
         this.#texteChrono = document.createElement('h2');
         this.#texteChrono.setAttribute("id","chrono");
-
-        this.#seconde < 10 ? this.#seconde = "0" + this.#seconde : this.#seconde = this.#seconde ;
-        
-        this.#texteChrono.textContent = "0" + this.#minute + " : " + this.#seconde;
 
         let container = document.getElementById("main-container"); 
         let boutons = document.getElementById("button-container");
@@ -28,7 +26,7 @@ export class Chronometre extends BaseGame
     play()
     {
         console.log("CHRONO");
-        this.#timer = setInterval(() => this.decompter(this.#minute, this.#seconde, this._wordle), 1000);
+        this.#timer = setInterval(() => this.decompter(this.#minute, this.#seconde), 1000);
     }
 
     stop()
@@ -46,6 +44,7 @@ export class Chronometre extends BaseGame
     decompter(minute, seconde, wordle)
     {
         let chrono = document.getElementById('chrono')
+
         seconde < 10 ? chrono.textContent = '0' + minute + ' : 0' + seconde : chrono.textContent = '0' + minute + ' : ' + seconde;
 
         seconde--;
@@ -59,7 +58,7 @@ export class Chronometre extends BaseGame
         {
             console.log("FIN DU CHRONO");
             document.getElementById('chrono').textContent = '00 : 00';
-            this._wordle.endGame();
+            this.#wordle.endGame();
         }
         this.setSec(seconde);
         this.setMin(minute);
