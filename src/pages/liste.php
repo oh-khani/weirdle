@@ -23,16 +23,34 @@
             Message('Le mot doit contenir 5 lettres', true);
         }
     }
+
+    // Arranger les mots dans un tableau
+    $nombreColonnes = 15;
+
     $query = 'SELECT * FROM weirdle_mot';
     $stmt = dbQuery($query);
     $mots = $stmt->fetchAll();
-?>
-    <h1>Liste des mots</h1>
-    <ul>
-        <?php
-        foreach ($mots as $mot) {
-            echo '<li>' . $mot['Mot'] . '</li>';
+    $betterResult = array_column($mots, "Mot", "idMot");
+
+    $nbMots = count($mots);
+    $nombreLignes = ceil($nbMots / $nombreColonnes);
+
+    
+    echo "<table>";
+    // Boucle pour chaque ligne
+    for ($i = 1; $i <= $nombreLignes; $i++) {
+        echo "<tr>";
+        // Boucle pour chaque colonne dans la ligne
+        for ($j = 1; $j <= $nombreColonnes; $j++) {
+            $indexMot = $i * $nombreColonnes + $j;
+            if ($indexMot < $nbMots) {
+                echo "<td>" . $betterResult[$indexMot] . "</td>";
+            }
         }
-        ?>
-    </ul>
+        echo "</tr>";
+    }
+
+    echo "</table>";
+?>
+
 <?php require_once '../assets/footer.php'; ?>

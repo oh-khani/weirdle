@@ -1,16 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
 body{
-    background: var(--default);
-    color: white;
     background: radial-gradient(circle at center, #252525 0%,#000000 100%);
-
+    color: white;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-
     position: relative;
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 div{
@@ -18,23 +16,40 @@ div{
 }
 
 :root{
-    --default: #121213;
+    --default: radial-gradient(circle at center, #252525 0%,#000000 100%);
     --empty: #3a3a3c;
     --wrong: #e0b72d;
     --correct: #4cd62b;
+    --navbar: rgb(53, 51, 51);
+}
+
+/* Police pour le Titre
+<uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 1000 */
+
+.dm-sans-titre {
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#titre{
+    font-size: 1.72rem;
+    text-decoration: none;
+    color: white;
+    padding: 7px 0;
 }
 
 header{
     display: flex;
     align-items: center;
     padding: 1rem 2rem;
-    /*background: var(--default);*/
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
     font-weight: bold;
 }
-
 
 footer{
     display: flex;
@@ -53,7 +68,7 @@ footer{
     display: grid;
     place-items: center;
     width: 100%;
-    height: 600px;
+    height: auto;
 }
 
 .grid{
@@ -73,16 +88,20 @@ footer{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 2.4rem;
 }
-.box.correct{
+
+.correct{
     background-color: var(--correct);
 }
-.box.wrong{
+
+.wrong{
     background-color: var(--wrong);
 }
-.box.empty{
+
+.empty{
     background-color: var(--empty);
 }
-.box.default{
+
+.default{
     background-color: var(--default);
 }
 
@@ -97,6 +116,7 @@ footer{
         transform: scaleY(1);
     }
 }
+
 .flip{
     animation: flip 0.5s ease;
 }
@@ -136,44 +156,47 @@ h1{
     font-style: normal;
 }
 
-body{
-    min-height: 100vh;
+table{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    box-shadow: 10px 10px 17px -1px rgba(0,0,0,0.54);
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+table th, td{
+    border: 1px solid rgb(27, 27, 27);
+    padding: 10px;
+}
+
+table th{
+    background-color: #363636;
+    color: white;
+}
+
+table tr:nth-child(2n){
+    background-color: #575757;
+}
+
+table tr:nth-child(2n+1){
+    background-color: #414141 ;
+}
+
+#menu{
     display: flex;
     flex-direction: column;
-    background: var(--default);
-    color: white;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    align-items: center;
+}
+
+#menu > * {
+    margin-top: 15px;
 }
 
 a, a:active, a :visited, a :link{
     color: white;
-}
-
-:root{
-    --default: #121213;
-    --empty: #3a3a3c;
-    --wrong: #e0b72d;
-    --correct: #4cd62b;
-    --navbar: #333;
-}
-
-#titre{
-    font-size: 1.72rem;
-    text-decoration: none;
-    color: white;
-    padding: 7px 0;
-}
-
-/* Police pour le Titre
-<uniquifier>: Use a unique and descriptive class name
-<weight>: Use a value from 100 to 1000 */
-
-.dm-sans-titre {
-  font-family: "DM Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700;
-  font-style: normal;
 }
 
 .navbar{
@@ -184,9 +207,7 @@ a, a:active, a :visited, a :link{
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 7px 0 rgba(0,0,0,.5);
-    /* min-width: 400px; */
     height: 50px;
-    
 }
 
 .navbar ul{
@@ -213,6 +234,7 @@ a, a:active, a :visited, a :link{
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
+
 .navbar-right li{
     padding-left: 13px;
 }
@@ -233,8 +255,6 @@ a, a:active, a :visited, a :link{
     background-color: var(--correct);
 }
 
-
-/* container principal qui contient tout le jeu */
 #main-container > *{
     margin-top: 15px;
 }
@@ -243,7 +263,6 @@ a, a:active, a :visited, a :link{
     margin-bottom: 15px;
 }
 
-/* affiche un message lorsqu'un mot saisi n'est pas valide */
 #tooltip p{
     font-size: 1.4rem;
     padding: 10px 20px;
@@ -253,66 +272,12 @@ a, a:active, a :visited, a :link{
     color: #121213;
     font-weight: 600;
     border-radius: 50px;
-    
-
 }
 
 #tooltip{
     text-align: center;
     opacity: 0;
     transition: opacity 1s ease;
-}
-
-#game{
-    display: grid;
-    place-items: center;
-    width: 100%;
-    height: auto;
-}
-
-.grid{
-    display: grid;
-    grid-template-columns: repeat(5, auto);
-}
-
-.box{
-    width: 60px;
-    height: 60px;
-    border: 2px solid var(--empty);
-    margin: 4px;
-    color: white;
-    text-transform: uppercase;
-    display: grid;
-    place-items: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2.4rem;
-}
-.correct{
-    background-color: var(--correct);
-}
-.wrong{
-    background-color: var(--wrong);
-}
-.empty{
-    background-color: var(--empty);
-}
-.default{
-    background-color: var(--default);
-}
-
-@keyframes flip {
-    0%{
-        transform: scaleY(1);
-    }
-    50%{
-        transform: scaleY(0);
-    }
-    100%{
-        transform: scaleY(1);
-    }
-}
-.flip{
-    animation: flip 0.5s ease;
 }
 
 .keyboard-row{
@@ -328,13 +293,11 @@ a, a:active, a :visited, a :link{
     width: 50px;
     height: 50px;
     margin: 2.5px;
-
     font-size: 20px;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-
     transition: all 0.2s ease;
 }
 
@@ -345,7 +308,6 @@ a, a:active, a :visited, a :link{
 .enter-key-tile, .backspace-key-tile{
     width: 70px;
 }
-
 
 #button-container{
     display: flex;
@@ -362,38 +324,3 @@ a, a:active, a :visited, a :link{
     text-align: center;
 }
 
-table{
-    margin-top: 25px;
-    padding: 10px;
-    border: 1px solid black;
-    border-collapse: collapse;
-    box-shadow: 10px 10px 17px -1px rgba(0,0,0,0.54);
-    margin-left: auto; 
-    margin-right: auto;
-}
-table th, td{
-    border: 1px solid rgb(27, 27, 27);
-    padding: 10px;
-}
-table th{
-    background-color: #4e4f50;
-    color: white;
-}
-
-table tr:nth-child(2n){
-    background-color: grey;
-}
-
-table tr:nth-child(2n+1){
-    background-color: rgb(94, 92, 92);
-}
-
-#menu{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#menu > * {
-    margin-top: 15px;
-}

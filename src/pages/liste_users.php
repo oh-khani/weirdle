@@ -8,6 +8,8 @@ $requete = "SELECT idUtilisateur, pseudo FROM weirdle_utilisateur";
 $stmt = dbQuery($requete);
 $result = $stmt->fetchAll();
 $betterResult = array_column($result, "pseudo", "idUtilisateur");
+
+
 ?>
 
 <h2>Listes de tous les utilisateurs</h2>
