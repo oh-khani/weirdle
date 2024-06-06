@@ -1,10 +1,7 @@
 import data from '../Dico/dictionnaire.json' with { type: 'json' };
-import { State } from './State.js';
 
 //Modes de jeu
 import { BaseGame } from './game_modes/BaseGame.js';
-import { Chronometre } from './game_modes/Chronometre.js';
-import { Invisible } from './game_modes/Invisible.js'
 
 
 //Importe tous les modes de jeu
@@ -240,24 +237,29 @@ export class Wordle {
         for (let i = 0; i < mot.length; i++) {
             const box = document.getElementById(`box-${row}-${i}`);
             const lettre = box.textContent;
-            const numOfOccurrencesSecret = this.getNumOfOccurrencesInWord(this.#state.secret, lettre);
+            
+            const toucheClavier = document.getElementById("Key" + lettre.toUpperCase());
+    
+            const numOfOccurrencesSecret = this.getNumOfOccurrencesInWord(this.#state.secret,lettre);
             const numOfOccurrencesGuess = this.getNumOfOccurrencesInWord(mot, lettre);
             const letterPosition = this.getPositionOfOccurrence(mot, lettre, i);
-
+          
             setTimeout(() => {
-                console.log(numOfOccurrencesGuess > numOfOccurrencesSecret &&
-                    letterPosition > numOfOccurrencesSecret);
                 if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
                     letterPosition > numOfOccurrencesSecret) {
-
                     box.classList.add('empty');
+                    toucheClavier.classList.add("empty");
                 } else {
                     if (lettre === this.#state.secret[i]) {
-                        box.classList.add('correct');
+                      box.classList.add('correct');
+                      toucheClavier.classList.remove("wrong");
+                      toucheClavier.classList.add("correct");
                     } else if (this.#state.secret.includes(lettre)) {
-                        box.classList.add('wrong');
+                      box.classList.add('wrong');
+                      toucheClavier.classList.add("wrong");
                     } else {
-                        box.classList.add('empty');
+                      box.classList.add('empty');
+                      toucheClavier.classList.add("empty");
                     }
                 }
             }, ((i + 1) * dure) / 2);
@@ -268,10 +270,14 @@ export class Wordle {
         setTimeout(() => {
             let message = '';
             //let gagne = false;
-            if (this.#state.secret.toUpperCase() === mot.toUpperCase()) { //Partie Gagnee
+
+            // Partie gagnée
+            if (this.#state.secret.toUpperCase() === mot.toUpperCase()) { 
                 //message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
                 this.#gagne = true;
-            } else if (this.#state.currentRow === this.#nombreEssai) { //Partie Perdu
+
+            // Partie Perdu
+            } else if (this.#state.currentRow === this.#nombreEssai) { 
                 //message = `Perdu ! Le mot était ${this.#state.secret}`;
                 this.#gagne = false;
             }

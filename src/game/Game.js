@@ -41,15 +41,3 @@ document.addEventListener("DOMContentLoaded", () =>{
     });
 
 })
-
-
-
-// switch (modeChoisis) 
-// {
-//     case "invisible": wordle.setMode(new Invisible(wordle)); break;
-//     case "chronometre": wordle.setMode(new Chronometre(wordle)); break;
-//     case "difficile": wordle.setMode(new Chronometre(wordle)); break;
-//     case "normal": wordle.setMode(new BaseGame(wordle)); break;
-//     default: break;
-// }
-

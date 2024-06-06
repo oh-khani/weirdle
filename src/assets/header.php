@@ -22,20 +22,14 @@ if ($preferences) {
             $style = "../style.css";
         }
     ?>
-    <style>
-        /* CSS par défaut */
-        html,body{
-            background: radial-gradient(circle at center, #252525 0%,#000000 100%);
-            color: white;
-        }
-        /* Styles personnalisés en fonction des préférences de l'utilisateur */
-        <?php echo $customStyles; ?>
-    </style>
+
+    <!-- Pour la police de Weirdle -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href=<?= $style; ?>>
+    
     <title>Weirdle</title>
 </head>
 <body>
@@ -80,13 +74,13 @@ if ($preferences) {
                 if ($_SERVER['REQUEST_URI'] === "/~p2301285/weirdle/src/pages/$url") {
                     $active = 'class="active"';
                 } 
-                echo "<li><a href=/~p2301285/weirdle/src/pages/$url $active>$title</a></li>";
+                echo "<li><a draggable='false' href=/~p2301285/weirdle/src/pages/$url $active>$title</a></li>";
             } ?>
             </ul>
         </div>
 
         <div class="navbar-center">
-            <a id="titre" href="/~p2301285/weirdle/"><h1 class="dm-sans-titre">Weirdle</h1></a>
+            <a draggable='false' id="titre" href="/~p2301285/weirdle/"><h1 class="dm-sans-titre">Weirdle</h1></a>
         </div>
         
 
@@ -94,13 +88,13 @@ if ($preferences) {
         <?php
         if (isset($_SESSION['user'])) {
             $active = Active('profil.php');
-            echo "<li><a href='/~p2301285/weirdle/src/pages/profil.php' $active>".strtoupper($_SESSION['user']['pseudo'])."$notif</a></li>";
-            echo "<li><a href='/~p2301285/weirdle/src/pages/deconnexion.php'>Déconnexion</a></li>";
+            echo "<li><a draggable='false' href='/~p2301285/weirdle/src/pages/profil.php' $active>".strtoupper($_SESSION['user']['pseudo'])."$notif</a></li>";
+            echo "<li><a draggable='false' href='/~p2301285/weirdle/src/pages/deconnexion.php'>Déconnexion</a></li>";
         } else {
             $active = Active('inscription.php');
-            echo "<li><a href='/~p2301285/weirdle/src/pages/inscription.php' $active>Inscription</a></li>";
+            echo "<li><a draggable='false' href='/~p2301285/weirdle/src/pages/inscription.php' $active>Inscription</a></li>";
             $active = Active('connexion.php');
-            echo "<li><a href='/~p2301285/weirdle/src/pages/connexion.php' $active>Connexion</a></li>";
+            echo "<li><a draggable='false'href='/~p2301285/weirdle/src/pages/connexion.php' $active>Connexion</a></li>";
         }
         ?>
     </ul>

@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
-html,body{
-    background: var(--default);
-    color: white;
+body{
     background: radial-gradient(circle at center, #252525 0%,#000000 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 div{
@@ -11,148 +16,22 @@ div{
 }
 
 :root{
-    --default: #121213;
+    --default: radial-gradient(circle at center, #252525 0%,#000000 100%);
     --empty: #3a3a3c;
     --wrong: #e0b72d;
     --correct: #4cd62b;
+    --navbar: rgb(53, 51, 51);
 }
 
-header{
-    display: flex;
-    align-items: center;
-    padding: 1rem 2rem;
-    /*background: var(--default);*/
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
+/* Police pour le Titre
+<uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 1000 */
 
-footer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    /*background: var(--default);*/
-    color: white;
-    font-family: "Merriweather", serif;
-    font-weight: 300;
-    font-style: normal;
-
-    position:fixed;
-    bottom: 0px;
-
-}
-
-#game{
-    display: grid;
-    place-items: center;
-    width: 100%;
-    height: 600px;
-}
-
-.grid{
-    display: grid;
-    grid-template-columns: repeat(5, auto);
-}
-
-.box{
-    width: 60px;
-    height: 60px;
-    border: 2px solid var(--empty);
-    margin: 4px;
-    color: white;
-    text-transform: uppercase;
-    display: grid;
-    place-items: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2.4rem;
-}
-.box.correct{
-    background-color: var(--correct);
-}
-.box.wrong{
-    background-color: var(--wrong);
-}
-.box.empty{
-    background-color: var(--empty);
-}
-.box.default{
-    background-color: var(--default);
-}
-
-@keyframes flip {
-    0%{
-        transform: scaleY(1);
-    }
-    50%{
-        transform: scaleY(0);
-    }
-    100%{
-        transform: scaleY(1);
-    }
-}
-.flip{
-    animation: flip 0.5s ease;
-}
-
-
-
-button{
-    padding: 1rem 2rem;
-    background: var(--default);
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-button:hover{
-    background: var(--empty);
-}
-
-h1{
-    font-family: "Merriweather", serif;
+.dm-sans-titre {
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
     font-weight: 700;
     font-style: normal;
-}
-
-#chrono{
-    font-family: "Merriweather", serif;
-    font-weight: 1000;
-    font-style: normal;
-    text-align: center;
-}
-
-.score{
-    font-family: "Merriweather", serif;
-    font-weight: 700;
-    font-style: normal;
-}
-
-body{
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: var(--default);
-    color: white;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-a, a:active, a :visited, a :link{
-    color: white;
-}
-
-:root{
-    --default: #121213;
-    --empty: #3a3a3c;
-    --wrong: #e0b72d;
-    --correct: #4cd62b;
-    --navbar: #333;
 }
 
 #titre{
@@ -162,117 +41,27 @@ a, a:active, a :visited, a :link{
     padding: 7px 0;
 }
 
-/* Police pour le Titre
-<uniquifier>: Use a unique and descriptive class name
-<weight>: Use a value from 100 to 1000 */
-
-.dm-sans-titre {
-  font-family: "DM Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.navbar{
-    position: sticky;
-    top: 0;
-    background-color: var(--navbar);
+header{
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 7px 0 rgba(0,0,0,.5);
-    min-width: 400px;
-    height: 50px;
-    
-}
-
-.navbar ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar a{
-    font-size: 1.08rem;
-    padding: 8px 12px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.navbar li{
-    display: inline-block;
-}
-
-.navbar-center{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-}
-.navbar-right li{
-    padding-left: 13px;
-}
-
-.navbar-right{
-    margin-right: 20px;
-}
-
-.navbar-left{
-    margin-left: 20px;
-}
-
-.navbar-left a:hover, .navbar-right a:hover{
-    background-color: rgba(211, 211, 211, 0.295);
-}
-
-.navbar li a:active{
-    background-color: var(--correct);
+    padding: 1rem 2rem;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 footer{
-    position: sticky;
-    margin-top: auto;
-    bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: auto;
+    padding: 2px;
     background: var(--navbar);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.05rem;
     font-weight: bold;
-    
-}
-
-/* container principal qui contient tout le jeu */
-#main-container > *{
-    margin-top: 15px;
-}
-
-#main-container{
-    margin-bottom: 15px;
-}
-
-
-/* affiche un message lorsqu'un mot saisi n'est pas valide */
-#tooltip p{
-    font-size: 1.4rem;
-    padding: 10px 20px;
-    display: inline-block;
-    border: 2px solid lightgray;
-    background-color: white;
-    color: #121213;
-    font-weight: 600;
-    border-radius: 50px;
-    
-
-}
-
-#tooltip{
-    text-align: center;
-    opacity: 0;
-    transition: opacity 1s ease;
+    font-size: 1.05rem;
 }
 
 #game{
@@ -299,15 +88,19 @@ footer{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 2.4rem;
 }
+
 .correct{
     background-color: var(--correct);
 }
+
 .wrong{
     background-color: var(--wrong);
 }
+
 .empty{
     background-color: var(--empty);
 }
+
 .default{
     background-color: var(--default);
 }
@@ -323,13 +116,15 @@ footer{
         transform: scaleY(1);
     }
 }
+
 .flip{
     animation: flip 0.5s ease;
 }
 
 button{
     padding: 1rem 2rem;
-    background: var(--default);
+    background-color: rgb(66, 66, 66);
+    border-color: #252525;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
@@ -340,7 +135,149 @@ button{
 }
 
 button:hover{
-    background: var(--empty);
+    background: rgba(255, 255, 255, 0.329);
+}
+
+h1{
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#chrono{
+    font-weight: 1000;
+    font-style: normal;
+    text-align: center;
+}
+
+.score{
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+table{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    box-shadow: 10px 10px 17px -1px rgba(0,0,0,0.54);
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+table th, td{
+    border: 1px solid rgb(27, 27, 27);
+    padding: 10px;
+}
+
+table th{
+    background-color: #363636;
+    color: white;
+}
+
+table tr:nth-child(2n){
+    background-color: #575757;
+}
+
+table tr:nth-child(2n+1){
+    background-color: #414141 ;
+}
+
+#menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#menu > * {
+    margin-top: 15px;
+}
+
+a, a:active, a :visited, a :link{
+    color: white;
+}
+
+.navbar{
+    position: sticky;
+    top: 0;
+    background-color: var(--navbar);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 7px 0 rgba(0,0,0,.5);
+    height: 50px;
+}
+
+.navbar ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar a{
+    font-size: 1.08rem;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar li{
+    display: inline-block;
+}
+
+.navbar-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.navbar-right li{
+    padding-left: 13px;
+}
+
+.navbar-right{
+    margin-right: 20px;
+}
+
+.navbar-left{
+    margin-left: 20px;
+}
+
+.navbar-left a:hover, .navbar-right a:hover{
+    background-color: rgba(211, 211, 211, 0.295);
+}
+
+.navbar li a:active{
+    background-color: var(--correct);
+}
+
+#main-container > *{
+    margin-top: 15px;
+}
+
+#main-container{
+    margin-bottom: 15px;
+}
+
+#tooltip p{
+    font-size: 1.4rem;
+    padding: 10px 20px;
+    display: inline-block;
+    border: 2px solid lightgray;
+    background-color: white;
+    color: #121213;
+    font-weight: 600;
+    border-radius: 50px;
+}
+
+#tooltip{
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 
 .keyboard-row{
@@ -356,13 +293,11 @@ button:hover{
     width: 50px;
     height: 50px;
     margin: 2.5px;
-
     font-size: 20px;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-
     transition: all 0.2s ease;
 }
 
@@ -370,11 +305,13 @@ button:hover{
     background-color: rgba(211, 211, 211, 0.295);
 }
 
+.enter-key-tile, .backspace-key-tile{
+    width: 70px;
+}
 
 #button-container{
     display: flex;
     align-items: center;
-    /* text-align: center; */
     justify-content: center;
 }
 
@@ -386,3 +323,4 @@ button:hover{
     font-size: 1.6rem;
     text-align: center;
 }
+

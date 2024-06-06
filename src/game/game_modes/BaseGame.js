@@ -5,18 +5,18 @@ import { Wordle } from "../Wordle.js";
  */
 export class BaseGame
 {
-    _wordle;
+    #wordle;
 
     constructor(wordle)
     {
-        this._wordle = wordle; //Reference au jeu en cours
-        if(this._wordle instanceof Wordle)
+        this.#wordle = wordle; //Reference au jeu en cours
+        if(this.#wordle instanceof Wordle)
         {
             console.log("WORDLE FONCTIONNEL");
         }
         else
         {
-            console.log(typeof this._wordle);
+            console.log(typeof this.#wordle);
         }
     }
     

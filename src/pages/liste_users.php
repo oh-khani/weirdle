@@ -8,7 +8,11 @@ $requete = "SELECT idUtilisateur, pseudo FROM weirdle_utilisateur";
 $stmt = dbQuery($requete);
 $result = $stmt->fetchAll();
 $betterResult = array_column($result, "pseudo", "idUtilisateur");
+
+
 ?>
+
+<h2>Listes de tous les utilisateurs</h2>
 
 <div class="table">
     <table>
@@ -46,7 +50,6 @@ $betterResult = array_column($result, "pseudo", "idUtilisateur");
 
 <?php
 if (isset($_SESSION['user'])) {
-    echo "<h2>Utilisateurs</h2>";
 
     $sender_id = $_SESSION['user']['idUtilisateur'];
     if (isset($_POST['receiver_id'])){

@@ -11,15 +11,15 @@ export class Invisible extends BaseGame
     play()
     {
         console.log("Invisible");
-        this.#cacher(true);
+        this.cacher(true);
     }
 
     stop()
     {
-        this.#cacher(false);
+        this.cacher(false);
     }
 
-    #cacher(estCache)
+    cacher(estCache)
     {
         let elements = document.getElementsByClassName('box');
         
