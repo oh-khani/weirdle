@@ -393,4 +393,6 @@ function start() {
     interfaceClavier();
 }
 
-start();
+// start();
+
+

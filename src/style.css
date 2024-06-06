@@ -101,11 +101,10 @@ footer{
     animation: flip 0.5s ease;
 }
 
-
-
 button{
     padding: 1rem 2rem;
-    background: var(--default);
+    background-color: rgb(66, 66, 66);
+    border-color: #252525;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
@@ -116,7 +115,7 @@ button{
 }
 
 button:hover{
-    background: var(--empty);
+    background: rgba(255, 255, 255, 0.329);
 }
 
 h1{
@@ -126,7 +125,6 @@ h1{
 }
 
 #chrono{
-    font-family: "Merriweather", serif;
     font-weight: 1000;
     font-style: normal;
     text-align: center;
@@ -237,11 +235,11 @@ a, a:active, a :visited, a :link{
 
 
 /* container principal qui contient tout le jeu */
-.container > *{
+#main-container > *{
     margin-top: 15px;
 }
 
-.container{
+#main-container{
     margin-bottom: 15px;
 }
 
@@ -317,22 +315,6 @@ a, a:active, a :visited, a :link{
     animation: flip 0.5s ease;
 }
 
-button{
-    padding: 1rem 2rem;
-    background: var(--default);
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-button:hover{
-    background: var(--empty);
-}
-
 .keyboard-row{
     display: flex;
     align-items: center;
@@ -404,4 +386,14 @@ table tr:nth-child(2n){
 
 table tr:nth-child(2n+1){
     background-color: rgb(94, 92, 92);
+}
+
+#menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#menu > * {
+    margin-top: 15px;
 }

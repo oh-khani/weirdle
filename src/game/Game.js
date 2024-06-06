@@ -5,15 +5,51 @@ import { BaseGame } from './game_modes/BaseGame.js'
 
 
 const wordle = new Wordle();
-let modeChoisis = "normal";
 
-switch (modeChoisis) 
-{
-    case "invisible": wordle.setMode(new Invisible(wordle)); break;
-    case "chronometre": wordle.setMode(new Chronometre(wordle)); break;
-    case "difficile": wordle.setMode(new Chronometre(wordle)); break;
-    case "normal": wordle.setMode(new BaseGame(wordle)); break;
-    default: break;
-}
+// Affichage menu pour choisir ses modes
+document.addEventListener("DOMContentLoaded", () =>{
+    document.getElementById("main-container").style.display = "none";
 
-wordle.startGame();
+    // Lancer le mode normal
+    document.getElementById("mode-normal").addEventListener("click", () => {
+        wordle.setMode(new BaseGame(wordle));
+
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("main-container").style.display = "block";
+
+        wordle.startGame();
+    });
+
+    // Lancer le mode chronomètre
+    document.getElementById("mode-chrono").addEventListener("click", () => {
+        wordle.setMode(new Chronometre(wordle));
+
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("main-container").style.display = "block";
+
+        wordle.startGame();
+    });
+
+    // Lancer le mode invisible
+    document.getElementById("mode-inv").addEventListener("click", () => {
+        wordle.setMode(new Invisible(wordle));
+
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("main-container").style.display = "block";
+
+        wordle.startGame();
+    });
+
+})
+
+
+
+// switch (modeChoisis) 
+// {
+//     case "invisible": wordle.setMode(new Invisible(wordle)); break;
+//     case "chronometre": wordle.setMode(new Chronometre(wordle)); break;
+//     case "difficile": wordle.setMode(new Chronometre(wordle)); break;
+//     case "normal": wordle.setMode(new BaseGame(wordle)); break;
+//     default: break;
+// }
+
