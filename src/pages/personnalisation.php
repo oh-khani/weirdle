@@ -2,23 +2,20 @@
 require_once '../assets/header.php';
 
 if (!isset($_SESSION['user'])) {
-    // Redirection si l'utilisateur n'est pas connecté
     header('Location: connexion.php');
-    exit; // Arrête l'exécution du script après la redirection
+    exit; 
 }
 
-// Récupération de l'idUtilisateur de l'utilisateur connecté
+
 $idUtilisateur = $_SESSION['user']['idUtilisateur'];
 
 // Traitement du formulaire de personnalisation si soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Vérification de l'action "Par défaut"
     if (isset($_POST['default'])) {
         // Suppression des données de personnalisation pour l'utilisateur actuel
         $query = "DELETE FROM weirdle_personnalisation WHERE idUtilisateur = :idUtilisateur";
         $stmt = dbExecute($query, ['idUtilisateur' => $idUtilisateur]);
         if ($stmt) {
-            // Redirection vers la page de personnalisation
             header('Location: personnalisation.php');
             exit;
         } else {

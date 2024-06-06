@@ -7,29 +7,26 @@ export class Chronometre extends BaseGame
     #seconde = 30;
     #timer;
     #texteChrono;
+    #wordle;
 
     constructor(wordle)
     {
         super(wordle);
+        this.#wordle = wordle;
         this.tempsAleatoire(1,1, 0, 59); //Temps aleatoire Minute : min -> 1 max -> 1 | Seconde : min -> 0 max -> 59
         this.#texteChrono = document.createElement('h2');
         this.#texteChrono.setAttribute("id","chrono");
 
-        this.#seconde < 10 ? 
-        this.#texteChrono.textContent = '0' + this.#minute + ' : 0' + this.#seconde : 
-        this.#texteChrono.textContent = '0' + this.#minute + ' : ' + this.#seconde;
+        let container = document.getElementById("main-container"); 
+        let boutons = document.getElementById("button-container");
         
-
-        let container = document.getElementById("main-container");
-        let grille = document.getElementById("button-container");
-        
-        container.insertBefore(this.#texteChrono, grille);
+        container.insertBefore(this.#texteChrono, boutons);
     }
 
     play()
     {
         console.log("CHRONO");
-        this.#timer = setInterval(() => this.decompter(this.#minute, this.#seconde, this._wordle), 1000);
+        this.#timer = setInterval(() => this.decompter(this.#minute, this.#seconde), 1000);
     }
 
     stop()
@@ -44,9 +41,10 @@ export class Chronometre extends BaseGame
         this.#seconde = seconde;
     }
 
-    decompter(minute, seconde)
+    decompter(minute, seconde, wordle)
     {
         let chrono = document.getElementById('chrono')
+
         seconde < 10 ? chrono.textContent = '0' + minute + ' : 0' + seconde : chrono.textContent = '0' + minute + ' : ' + seconde;
 
         seconde--;
@@ -56,16 +54,11 @@ export class Chronometre extends BaseGame
             seconde = 59;
         }
 
-        if(minute <= 0 && seconde == 0)
+        if(minute < 0)
         {
             console.log("FIN DU CHRONO");
             document.getElementById('chrono').textContent = '00 : 00';
-
-            //console.log(typeof this._wordle);
-            if(this._wordle instanceof Wordle)
-            {
-                this._wordle.endGame();
-            }
+            this.#wordle.endGame();
         }
         this.setSec(seconde);
         this.setMin(minute);

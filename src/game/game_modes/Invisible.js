@@ -11,6 +11,8 @@ export class Invisible extends BaseGame
     play()
     {
         console.log("Invisible");
+        let clavier = document.getElementById("keyboard");
+        clavier.classList.add("hidden");
         this.cacher(true);
     }
 

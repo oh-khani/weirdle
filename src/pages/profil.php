@@ -1,3 +1,59 @@
+<head>
+<style>
+    body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .ProfilP, .ImageProfil, .MdpP, .AjouterMot, .DemandeMot, .listeAmis{
+            text-align: center;
+        }
+
+        .ProfilP h1, .ImageProfil h1, .MdpP h1, .AjouterMot h1, .DemandeMot h1, .listeAmis h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .ProfilP h2, .ImageProfil h2, .MdpP h2, .AjouterMot h2, .DemandeMot h2, .listeAmis h2{
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #777;
+            font-size: 30px;
+        }
+
+        .ProfilP img {
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .ScoreP {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .ScoreP h2 {
+            font-size: 1.8rem;
+            color: #777;
+        }
+
+        
+
+</style>
+</head>
 <?php
 require_once '../assets/header.php';
 
@@ -18,9 +74,13 @@ $roles = $stmt->fetchAll();
 $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
 ?>
 
+<div class="ProfilP">
 <h1>Profil de <?= strtoupper($_SESSION['user']['pseudo']) ?></h1>
-<h2>Role: <?= strtoupper($role) ?></h2>
+<h2>Rôle: <?= strtoupper($role) ?></h2>
 <img src="../img/profil/<?= $_SESSION['user']['img'] ?>" style="width: 100px; height: 100px;">
+</div>
+
+<div class="ScoreP">
 <h2>Score</h2>
 <table>
     <thead>
@@ -38,6 +98,10 @@ $role = $roles[$_SESSION['user']['role'] - 1]['Role'];
         <?php } ?>
     </tbody>
 </table>
+</div>
+
+<div class="ImageProfil">
+
 <?php
 //////////////////////////////////////////
 
@@ -48,9 +112,9 @@ if (!in_array('../img/profil/'.$_SESSION['user']['img'], $images)) {
     $_SESSION['user']['img'] = 'default.jpg';
 }
 ?>
+<div class="">
 <form method="post" action="profil.php">
-    <div>
-        <span for="image">Image: </span>
+    <div style="margin: 2rem;">
         <?php foreach ($images as $image) {
             $image = basename($image);
             if ($image == $_SESSION['user']['img']) {
@@ -63,6 +127,8 @@ if (!in_array('../img/profil/'.$_SESSION['user']['img'], $images)) {
     </div>
     <button type="submit">Changer</button>
 </form>
+    </div>
+    
 
 <?php
 if (isset($_POST['image'])) {
@@ -76,16 +142,20 @@ if (isset($_POST['image'])) {
     }
 }
 //////////////////////////////////////////
+?>
+</div>
 
+<div class="MdpP">
+<?php
 // Reinitialisation du mot de passe///////
 echo "<h2>Réinitialisation du mot de passe</h2>";
 ?>
 <form method="post" action="profil.php">
-    <div>
+    <div style="margin: 2rem;">
         <label for="reinit">Nouveau mot de passe</label>
         <input type="password" name="reinit" id="reinit" required>
     </div>
-    <div>
+    <div style="margin: 2rem;">
         <label for="reinit2">Confirmer le mot de passe</label>
         <input type="password" name="reinit2" id="reinit2" required>
     </div>
@@ -111,7 +181,11 @@ if (isset($_POST['reinit']) && isset($_POST['reinit2'])) {
     }
 }
 //////////////////////////////////////////
+?>
+</div>
 
+<div class="AjouterMot">
+<?php
 // Formulaire pour ajouter  ou proposer un mot
 if ($_SESSION['user']['role'] == 1) { 
     echo "<h2>Ajouter un mot</h2>";
@@ -229,7 +303,11 @@ if ($_SESSION['user']['role'] != 3) {
     <?php }
 }
 //////////////////////////////////////////
+?>
+</div>
 
+<div class="DemandeMot">
+<?php
 // Affichage des demandes d'amis sur la page de profil
 $currentUserId = $_SESSION['user']['idUtilisateur'];
 
@@ -267,9 +345,13 @@ if (isset($_POST['request_id']) && isset($_POST['action'])){
     }
 
 }
-
 //////////////////////////////////////////
+?>
+</div>
 
+
+<div class="listeAmis">
+<?php
 // Affichage liste des utilisateurs amis
 echo "<h2>Liste d'amis</h2>"; 
 
@@ -295,6 +377,10 @@ if ($result){
 } else {
     echo "<p>Vous n'avez pas encore d'amis.</p>";
 }
+?>
+</div>
 
 
+<?php
 require_once '../assets/footer.php';
+?>
