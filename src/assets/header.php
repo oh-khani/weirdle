@@ -1,4 +1,14 @@
-<?php require_once 'BDD.php'; ?>
+<?php require_once 'BDD.php';
+require_once 'functions.php';
+
+// Récupérer les préférences de personnalisation de l'utilisateur connecté depuis la base de données
+$preferences = getUserPreferences(); // Fonction à définir dans functions.php 
+$customStyles = '';
+if ($preferences) {
+    $customStyles .= 'html,body { background: ' . $preferences['couleur'] . '; }';
+    $customStyles .= 'html,body { color: ' . $preferences['couleur_texte'] . '; }';
+    $customStyles .= 'html,body { font-family: ' . $preferences['police_texte'] . '; }';
+}?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,7 +22,15 @@
             $style = "../style.css";
         }
     ?>
-
+    <style>
+        /* CSS par défaut */
+        html,body{
+            background: radial-gradient(circle at center, #252525 0%,#000000 100%);
+            color: white;
+        }
+        /* Styles personnalisés en fonction des préférences de l'utilisateur */
+        <?php echo $customStyles; ?>
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
@@ -43,11 +61,14 @@
             $pages = [
                 'liste.php' => 'Liste des mots',
                 'leaderboard.php' => 'Leaderboard',
-                'liste_users.php' => "Utilisateurs"
+                'liste_users.php' => 'Utilisateurs',
                 /*
                 'lien.php dans le dossier pages' => 'Nom de la page'
                 */
-            ]; 
+            ];
+            if (isset($_SESSION['user'])) {
+                $pages['personnalisation.php'] = 'Personnalisation';
+            }
             if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 1) {
                 $pages['admin.php'] = 'Admin';
             }

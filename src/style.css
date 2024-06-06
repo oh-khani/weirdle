@@ -245,10 +245,15 @@ footer{
     
 }
 
-/* container principâl qui contient tout le jeu */
-.container > *{
+/* container principal qui contient tout le jeu */
+#main-container > *{
     margin-top: 15px;
 }
+
+#main-container{
+    margin-bottom: 15px;
+}
+
 
 /* affiche un message lorsqu'un mot saisi n'est pas valide */
 #tooltip p{

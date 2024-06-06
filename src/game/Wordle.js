@@ -2,7 +2,7 @@ import data from '../Dico/dictionnaire.json' with { type: 'json' };
 import { State } from './State.js';
 
 //Modes de jeu
-import { ModeJeu } from './game_modes/BaseGame.js';
+import { BaseGame } from './game_modes/BaseGame.js';
 import { Chronometre } from './game_modes/Chronometre.js';
 import { Invisible } from './game_modes/Invisible.js'
 
@@ -11,38 +11,44 @@ import { Invisible } from './game_modes/Invisible.js'
 //const files = await import.meta.glob("./game_modes/ModeJeu/*.js");
 //for (const file in files) { await import(file); }
 
-export class Wordle
-{
-    #mode;// : ModeJeu;
+export class Wordle {
+    #mode; // : ModeJeu;
     #state; //: State;
     #dico; //: string[] = data.mots;
-    #mot = 'tests';// : string;
+    #mot = 'tests'; // : string;
     #nombreEssai = 6;
     #gagne = false;
 
-    constructor()
-    {
+    constructor() {
         this.#dico = data.mots;
-        this.#mot = this.#dico[Math.floor(Math.random() * this.#dico.length)].toLowerCase();
+        this.#mot = this.#dico[Math.floor(Math.random() * this.#dico.length)].toUpperCase();
         this.#state = {
             secret: this.#mot,
             grid: Array(this.#nombreEssai).fill().map(() => Array(this.#mot.length).fill()),
             //grid: Array(this.#nombreEssai).fill().map(() => Array(this.#mot.length).fill('')),
-            
 
             currentRow: 0,
             currentCol: 0
         };
-        this.#mode = new ModeJeu(this);
+        this.#mode = new BaseGame(this);
         console.log(this.#mot);
 
-        // this.isLetter = this.isLetter.bind(this);
+        // Lier les méthodes
+        this.clavier = this.clavier.bind(this);
+        this.processKey = this.processKey.bind(this);
     }
 
-    getMot(){return this.#state.secret;}
+    getMot() {
+        return this.#state.secret;
+    }
 
-    setMode(mode){this.#mode = mode; }
-    getMode(){return this.#mode;}
+    setMode(mode) {
+        this.#mode = mode;
+    }
+
+    getMode() {
+        return this.#mode;
+    }
 
     /**
      * 
@@ -65,7 +71,7 @@ export class Wordle
      * @param {string} lettre 
      * dessine une case de la grille
      */
-    drawBox(container, row, col, lettre='') {
+    drawBox(container, row, col, lettre = '') {
         const box = document.createElement('div');
         box.className = 'box';
         box.id = `box-${row}-${col}`;
@@ -80,13 +86,13 @@ export class Wordle
      * @param {int} nbessai
      * @returns {void}
      * dessine la grille de jeu avec le nombre d'essai et la longueur du mot
-    */
+     */
     drawGrid(container, nbessai = 6) {
         const longueur = this.#state.secret.length;
         const grid = document.createElement('div');
         grid.className = 'grid';
-        for (let row = 0; row < longueur+1; row++) {
-            for (let col = 0; col < nbessai-1; col++) {
+        for (let row = 0; row < longueur + 1; row++) {
+            for (let col = 0; col < nbessai - 1; col++) {
                 this.drawBox(grid, row, col);
             }
         }
@@ -98,22 +104,22 @@ export class Wordle
      * Lis les touches du clavier
      */
     clavier(touche) {
-        console.log(touche);
-
         const lettre = touche.key;
+        console.log(lettre);
+
         let mot = '';
 
         if (lettre === 'Enter' || lettre === "⏎") {
-            if (this.#state.currentCol === 5){
-                mot = getCurrentWord();
+            if (this.#state.currentCol === 5) {
+                mot = this.getCurrentWord();
                 if (this.isWord(mot)) {
                     this.#state.currentCol = 0;
                     this.reveal(mot);
                     this.#state.currentRow++;
-                }else if (mot  === 'hideo') {
-                    document.body.style.backgroundImage = 
+                } else if (mot === 'hideo') {
+                    document.body.style.backgroundImage =
                         "url('./src/img/hideo-kojima-credits.gif')";
-                }else{
+                } else {
                     let tooltip = document.getElementById("tooltip");
                     tooltip.style.opacity = 1;
                     setTimeout(() => {
@@ -122,52 +128,51 @@ export class Wordle
                 }
             }
         } else if (lettre === 'Backspace' || lettre === "⌫") {
-            () => this.supprLettre();
-        } else if (() => this.isLetter(lettre)) {
-            // this.addLettre(lettre.toLowerCase());
-            () => this.addLettre(lettre)
+            this.supprLettre();
+        } else if (this.isLetter(lettre)) {
+            this.addLettre(lettre)
         }
-        () => this.update();
+        this.update();
     }
 
-/**
- * Affiche l'interface clavier pour pouvoir jouer avec la souris
- * et voir quelles lettres ont déjà été utilisées
- */
-     interfaceClavier(){
+    /**
+     * Affiche l'interface clavier pour pouvoir jouer avec la souris
+     * et voir quelles lettres ont déjà été utilisées
+     */
+    interfaceClavier() {
         let keyboardContainer = document.getElementById("keyboard");
-        
+
         let keyboard = [
             ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "⌫"],
             ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "⏎"],
             ["W", "X", "C", "V", "B", "N"]
         ];
 
-        for (let i = 0; i < keyboard.length; i++){
+        for (let i = 0; i < keyboard.length; i++) {
             let currentLigne = keyboard[i];
             let ligneClavier = document.createElement("div");
             ligneClavier.classList.add("keyboard-row");
 
-            for (let j = 0; j < currentLigne.length; j++){
+            for (let j = 0; j < currentLigne.length; j++) {
                 let toucheClavier = document.createElement("div");
 
                 let touche = currentLigne[j];
                 toucheClavier.textContent = touche;
 
-                if (touche === "⏎"){
+                if (touche === "⏎") {
                     toucheClavier.setAttribute("id", "Enter");
                     toucheClavier.classList.add("enter-key-tile");
                     toucheClavier.classList.add("keytile");
-                } else if (touche === "⌫"){
+                } else if (touche === "⌫") {
                     toucheClavier.setAttribute("id", "Backspace");
                     toucheClavier.classList.add("backspace-key-tile");
                     toucheClavier.classList.add("keytile");
-                } else if ("A" <= touche && touche <= "Z"){
+                } else if ("A" <= touche && touche <= "Z") {
                     toucheClavier.setAttribute("id", "Key" + touche);
                     toucheClavier.classList.add("keytile");
-                    
+
                 } else {
-                    toucheClavier.setAttribute("id", "Emoji" + (j-5));
+                    toucheClavier.setAttribute("id", "Emoji" + (j - 5));
                     toucheClavier.classList.add("keytile");
                 }
                 toucheClavier.addEventListener("click", this.processKey);
@@ -180,11 +185,10 @@ export class Wordle
     }
 
     /* S'utilise avec interfaceClavier() */
-    processKey(){
-        let lettre = {"key" : this.textContent};
-        () => this.clavier(lettre);
+    processKey(event) {
+        let lettre = { "key": event.target.textContent };
+        this.clavier(lettre);
     }
-
 
     /**
      * 
@@ -192,7 +196,7 @@ export class Wordle
      * @returns {boolean}
      * return true si le mot est dans le dictionnaire
      */
-    isWord(mot) {return this.#dico.includes(mot.toUpperCase());}
+    isWord(mot) { return this.#dico.includes(mot.toUpperCase()); }
 
     /**
      * 
@@ -200,7 +204,7 @@ export class Wordle
      * @returns {boolean}
      * return true si la lettre est dans l'alphabet
      */
-    isLetter(lettre) {return lettre.length === 1 && lettre.match(/[a-z]/i);}
+    isLetter(lettre) { return lettre.length === 1 && lettre.match(/[a-z]/i); }
 
     /**
      * 
@@ -209,10 +213,9 @@ export class Wordle
      */
     addLettre(lettre) {
         console.log(lettre);
-        if (this.#state.currentCol === 5) {return;    }
-        this.#state.grid[this.#state.currentRow][this.#state.currentCol] = lettre;
+        if (this.#state.currentCol === 5) { return; }
+        this.#state.grid[this.#state.currentRow][this.#state.currentCol] = lettre.toUpperCase();
         this.#state.currentCol++;
-
     }
 
     /**
@@ -237,29 +240,29 @@ export class Wordle
         for (let i = 0; i < mot.length; i++) {
             const box = document.getElementById(`box-${row}-${i}`);
             const lettre = box.textContent;
-            const numOfOccurrencesSecret = this.getNumOfOccurrencesInWord(this.#state.secret,lettre);
+            const numOfOccurrencesSecret = this.getNumOfOccurrencesInWord(this.#state.secret, lettre);
             const numOfOccurrencesGuess = this.getNumOfOccurrencesInWord(mot, lettre);
             const letterPosition = this.getPositionOfOccurrence(mot, lettre, i);
-        
+
             setTimeout(() => {
                 console.log(numOfOccurrencesGuess > numOfOccurrencesSecret &&
                     letterPosition > numOfOccurrencesSecret);
                 if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
                     letterPosition > numOfOccurrencesSecret) {
-                       
+
                     box.classList.add('empty');
                 } else {
                     if (lettre === this.#state.secret[i]) {
-                    box.classList.add('correct');
+                        box.classList.add('correct');
                     } else if (this.#state.secret.includes(lettre)) {
-                    box.classList.add('wrong');
+                        box.classList.add('wrong');
                     } else {
-                    box.classList.add('empty');
+                        box.classList.add('empty');
                     }
                 }
             }, ((i + 1) * dure) / 2);
             box.classList.add('flip')
-            box.style.animationDelay = `${i * dure/2}ms`
+            box.style.animationDelay = `${i * dure / 2}ms`
         }
 
         setTimeout(() => {
@@ -268,11 +271,11 @@ export class Wordle
             if (this.#state.secret.toUpperCase() === mot.toUpperCase()) { //Partie Gagnee
                 //message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
                 this.#gagne = true;
-            }else if(this.#state.currentRow === this.#nombreEssai) { //Partie Perdu
+            } else if (this.#state.currentRow === this.#nombreEssai) { //Partie Perdu
                 //message = `Perdu ! Le mot était ${this.#state.secret}`;
                 this.#gagne = false;
             }
-            
+
             //Fin de partie
             if (this.#state.secret.toUpperCase() === mot.toUpperCase() || this.#state.currentRow === this.#nombreEssai) {
                 this.endGame();
@@ -290,13 +293,13 @@ export class Wordle
     getNumOfOccurrencesInWord(word, letter) {
         let result = 0;
         for (let i = 0; i < word.length; i++) {
-        if (word[i] === letter) {
-            result++;
-        }
+            if (word[i] === letter) {
+                result++;
+            }
         }
         return result;
     }
-    
+
     /**
      * 
      * @param {string} word 
@@ -308,13 +311,12 @@ export class Wordle
     getPositionOfOccurrence(word, letter, position) {
         let result = 0;
         for (let i = 0; i <= position; i++) {
-        if (word[i] === letter) {
-            result++;
-        }
+            if (word[i] === letter) {
+                result++;
+            }
         }
         return result;
     }
-    
 
     /**
      * @returns {string} retourne le mot courant
@@ -326,9 +328,9 @@ export class Wordle
     /**
      * 
      * stop le jeu et affiche le score
-    */
+     */
     printScore(msg) {
-        const container = document.getElementById('game');
+        const container = document.getElementById('score');
         const score = document.createElement('div');
         score.className = 'score';
         score.textContent = msg;
@@ -345,7 +347,7 @@ export class Wordle
         const button = document.createElement('button');
         button.textContent = 'Definition';
         button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${this.#state.secret}`, '_blank');
-        const container = document.getElementById('game');
+        const container = document.getElementById('button-container');
         container.appendChild(button)
     }
 
@@ -353,11 +355,11 @@ export class Wordle
      * 
      * @param {boolean} gagne 
      * creer un bouton pour partager le score sur twitter (pas X)
-    */
+     */
     shareScoreOnTwitter(gagne) {
         const score = this.#state.currentRow;
         let url = ``;
-        if (gagne)  {
+        if (gagne) {
             url = `https://twitter.com/intent/tweet?text=J'ai%20trouvé%20le%20mot%20en%20${score}%20essai`;
         } else {
             url = `https://twitter.com/intent/tweet?text=J'ai%20perdu%20le%20mot%20était%20${this.#state.secret}`;
@@ -365,9 +367,9 @@ export class Wordle
         const button = document.createElement('button');
         button.textContent = 'Partager sur Twitter';
         button.onclick = () => window.open(url, '_blank');
-        const container = document.getElementById('game');
+        const container = document.getElementById('button-container');
         container.appendChild(button);
-        document.body.onkeydown = () => {};
+        document.body.onkeydown = () => { };
     }
 
     /**
@@ -378,7 +380,7 @@ export class Wordle
         const button = document.createElement('button');
         button.textContent = 'Rejouer';
         button.onclick = () => window.location.reload();
-        const container = document.getElementById('game');
+        const container = document.getElementById('button-container');
         container.appendChild(button);
 
     }
@@ -389,7 +391,7 @@ export class Wordle
      */
     startGame() {
         const container = document.getElementById('game');
-        this.drawGrid(container, this.#nombreEssai); 
+        this.drawGrid(container, this.#nombreEssai);
         this.interfaceClavier();
 
         //TODO: Appeler le mode de jeu
@@ -399,10 +401,10 @@ export class Wordle
     /**
      * Met fin a la partie 
      */
-    endGame(){
+    endGame() {
         console.log("Partie terminee!");
         let message;
-        if(this.#gagne == true) message ='Gagné ! vous avez trouvé en ' + (this.#state.currentRow) + ' essais';
+        if (this.#gagne == true) message = 'Gagné ! vous avez trouvé en ' + (this.#state.currentRow) + ' essais';
         else message = `Perdu ! Le mot était ${this.#state.secret}`;
 
         this.#mode.stop();

@@ -1,7 +1,7 @@
-import { ModeJeu } from "./BaseGame.js";
+import { BaseGame } from "./BaseGame.js";
 import { Wordle } from "../Wordle.js";
 
-export class Chronometre extends ModeJeu
+export class Chronometre extends BaseGame
 {
     #minute = 0;
     #seconde = 4;
@@ -11,20 +11,21 @@ export class Chronometre extends ModeJeu
     constructor(wordle)
     {
         super(wordle);
-        this.tempsAleatoire(1,4, 0, 59); //Temps aleatoire Minute : min -> 1 max -> 4 | Seconde : min -> 0 max -> 59
+        this.tempsAleatoire(1,1, 0, 59); //Temps aleatoire Minute : min -> 1 max -> 2 | Seconde : min -> 0 max -> 59
         this.#texteChrono = document.createElement('h2');
         this.#texteChrono.setAttribute("id","chrono");
         this.#texteChrono.textContent = this.#minute + ' : ' + this.#seconde;
 
-        let container = document.getElementsByClassName("container")[0];
-        container.appendChild(this.#texteChrono);
-        //setTimeout(stop, 3000);
+        let container = document.getElementById("main-container");
+        let grille = document.getElementById("button-container");
+        
+        container.insertBefore(this.#texteChrono, grille);
     }
 
     play()
     {
         console.log("CHRONO");
-        this.#timer = setInterval(() => decompter(this.#minute, this.#seconde, this._wordle), 1000);
+        this.#timer = setInterval(() => this.decompter(this.#minute, this.#seconde, this._wordle), 1000);
     }
 
     stop()
@@ -42,7 +43,6 @@ export class Chronometre extends ModeJeu
     decompter(minute, seconde, wordle)
     {
         document.getElementById('chrono').textContent = minute + ' : ' + seconde;
-        //texteChrono.textContent = seconde;
         seconde--;
         if (seconde < 0) 
         {
