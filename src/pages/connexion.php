@@ -27,11 +27,11 @@ if (isset($_POST['pseudo']) && isset($_POST['password'])) {
 ?>
 <h1>Connexion</h1>
 <form method="post" action="./connexion.php">
-    <div>
+    <div style="margin: 1rem;">
         <label for="pseudo">Pseudo</label>
         <input type="text" name="pseudo" id="pseudo" required>
     </div>
-    <div>
+    <div style="margin: 1rem;">
         <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required>
     </div>
