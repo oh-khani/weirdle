@@ -1,7 +1,7 @@
-import { ModeJeu } from "./BaseGame.js";
+import { BaseGame } from "./BaseGame.js";
 import { Wordle } from "../Wordle.js";
 
-export class Invisible extends ModeJeu
+export class Invisible extends BaseGame
 {
     constructor(wordle)
     {

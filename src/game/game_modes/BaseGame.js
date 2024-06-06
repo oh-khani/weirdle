@@ -3,7 +3,7 @@ import { Wordle } from "../Wordle.js";
 /**
  * Base de tous les modes de jeu. (Classe Parent)
  */
-export class ModeJeu
+export class BaseGame
 {
     _wordle;
 

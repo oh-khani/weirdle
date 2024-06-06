@@ -2,7 +2,7 @@ import data from '../Dico/dictionnaire.json' with { type: 'json' };
 import { State } from './State.js';
 
 //Modes de jeu
-import { ModeJeu } from './game_modes/BaseGame.js';
+import { BaseGame } from './game_modes/BaseGame.js';
 import { Chronometre } from './game_modes/Chronometre.js';
 import { Invisible } from './game_modes/Invisible.js'
 
@@ -30,7 +30,7 @@ export class Wordle {
             currentRow: 0,
             currentCol: 0
         };
-        this.#mode = new ModeJeu(this);
+        this.#mode = new BaseGame(this);
         console.log(this.#mot);
 
         // Lier les méthodes

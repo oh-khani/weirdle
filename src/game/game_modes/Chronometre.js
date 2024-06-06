@@ -1,7 +1,7 @@
-import { ModeJeu } from "./BaseGame.js";
+import { BaseGame } from "./BaseGame.js";
 import { Wordle } from "../Wordle.js";
 
-export class Chronometre extends ModeJeu
+export class Chronometre extends BaseGame
 {
     #minute = 0;
     #seconde = 4;
