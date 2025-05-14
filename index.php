@@ -1,5 +1,5 @@
 <header class="hide-header">
-<?php 
+<?php
 require_once 'src/assets/header.php';
 ?>
 </header>
@@ -33,8 +33,8 @@ require_once 'src/assets/header.php';
         }
 
         .button-container{
-            display: flex; 
-            justify-content: center; 
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
 
@@ -58,7 +58,7 @@ require_once 'src/assets/header.php';
         .button:hover {
             background-color: #3ab11f;
         }
-        
+
     </style>
 </head>
 
@@ -71,7 +71,7 @@ require_once 'src/assets/header.php';
         <a href="src/pages/connexion.php" class="login-button">Connexion</a>
     </div>
     <div class="button-container">
-        <a href="src/pages/liste.php" class="login-button">Liste des mots</a>
+        <a href="src/pages/liste_mots.php" class="login-button">Liste des mots</a>
     </div>
     <div class="button-container">
         <a href="src/pages/leaderboard.php" class="login-button">Leaderboard</a>

@@ -1,6 +1,6 @@
 <?php
 require_once '../assets/header.php';
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 1) echo '<script>window.location.href = "/~p2301285/weirdle/src/pages/connexion.php";</script>';
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 1) echo '<script>window.location.href = "/src/pages/connexion.php";</script>';
 
 if (isset($_POST['role']) && isset($_POST['pseudo'])) {
     $query = 'UPDATE weirdle_utilisateur SET role = :role WHERE pseudo = :pseudo';

@@ -1,0 +1,63 @@
+# Environment files
+.env
+!src/assets/env.php
+*.env
+
+# Dependencies
+/vendor/
+/node_modules/
+composer.lock
+package-lock.json
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+/logs/
+/database/
+
+# Cache and temporary files
+/cache/
+/tmp/
+*.cache
+*.tmp
+
+# Build and compiled files
+/dist/
+/build/
+*.min.js
+*.min.css
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Testing
+/coverage/
+.phpunit.result.cache
+phpunit.xml
+
+# System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Configuration files with sensitive data
+config.local.php
+config.prod.php

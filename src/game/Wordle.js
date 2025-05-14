@@ -49,7 +49,7 @@ export class Wordle {
     }
 
     /**
-     * 
+     *
      * Met à jour la grille de jeu avec les lettres entrées par le joueur
      */
     update() {
@@ -62,11 +62,11 @@ export class Wordle {
     }
 
     /**
-     * 
-     * @param {*} container 
-     * @param {int} row 
-     * @param {int} col 
-     * @param {string} lettre 
+     *
+     * @param {*} container
+     * @param {int} row
+     * @param {int} col
+     * @param {string} lettre
      * dessine une case de la grille
      */
     drawBox(container, row, col, lettre = '') {
@@ -79,8 +79,8 @@ export class Wordle {
     }
 
     /**
-     * 
-     * @param {*} container 
+     *
+     * @param {*} container
      * @param {int} nbessai
      * @returns {void}
      * dessine la grille de jeu avec le nombre d'essai et la longueur du mot
@@ -97,8 +97,8 @@ export class Wordle {
         container.appendChild(grid);
     }
 
-    /** 
-     * 
+    /**
+     *
      * Lis les touches du clavier
      */
     clavier(touche) {
@@ -190,24 +190,24 @@ export class Wordle {
     }
 
     /**
-     * 
-     * @param {string} mot 
+     *
+     * @param {string} mot
      * @returns {boolean}
      * return true si le mot est dans le dictionnaire
      */
     isWord(mot) { return this.#dico.includes(mot.toUpperCase()); }
 
     /**
-     * 
-     * @param {string} lettre 
+     *
+     * @param {string} lettre
      * @returns {boolean}
      * return true si la lettre est dans l'alphabet
      */
     isLetter(lettre) { return lettre.length === 1 && lettre.match(/[a-z]/i); }
 
     /**
-     * 
-     * @param {string} lettre 
+     *
+     * @param {string} lettre
      * ajoute la lettre dans la grille
      */
     addLettre(lettre) {
@@ -218,7 +218,7 @@ export class Wordle {
     }
 
     /**
-     * 
+     *
      * supprime la lettre courante de la grille
      */
     supprLettre() {
@@ -228,8 +228,8 @@ export class Wordle {
     }
 
     /**
-     * 
-     * @param {string} mot 
+     *
+     * @param {string} mot
      * révèle le mot
      */
     reveal(mot) {
@@ -239,13 +239,13 @@ export class Wordle {
         for (let i = 0; i < mot.length; i++) {
             const box = document.getElementById(`box-${row}-${i}`);
             const lettre = box.textContent;
-            
+
             const toucheClavier = document.getElementById("Key" + lettre.toUpperCase());
-    
+
             const numOfOccurrencesSecret = this.getNumOfOccurrencesInWord(this.#state.secret,lettre);
             const numOfOccurrencesGuess = this.getNumOfOccurrencesInWord(mot, lettre);
             const letterPosition = this.getPositionOfOccurrence(mot, lettre, i);
-          
+
             setTimeout(() => {
                 if (numOfOccurrencesGuess > numOfOccurrencesSecret &&
                     letterPosition > numOfOccurrencesSecret) {
@@ -274,12 +274,12 @@ export class Wordle {
             //let gagne = false;
 
             // Partie gagnée
-            if (this.#state.secret.toUpperCase() === mot.toUpperCase()) { 
+            if (this.#state.secret.toUpperCase() === mot.toUpperCase()) {
                 //message ='Gagné ! vous avez trouve en ' + (this.#state.currentRow) + ' essais';
                 this.#gagne = true;
 
             // Partie Perdu
-            } else if (this.#state.currentRow === this.#nombreEssai) { 
+            } else if (this.#state.currentRow === this.#nombreEssai) {
                 //message = `Perdu ! Le mot était ${this.#state.secret}`;
                 this.#gagne = false;
             }
@@ -292,9 +292,9 @@ export class Wordle {
     }
 
     /**
-     * 
-     * @param {string} word 
-     * @param {string} letter 
+     *
+     * @param {string} word
+     * @param {string} letter
      * @returns {int}
      * retourne le nombre d'occurence de la lettre dans le mot
      */
@@ -309,10 +309,10 @@ export class Wordle {
     }
 
     /**
-     * 
-     * @param {string} word 
-     * @param {string} letter 
-     * @param {int} position 
+     *
+     * @param {string} word
+     * @param {string} letter
+     * @param {int} position
      * @returns {int}
      * retourne le nombre d'occurence de la lettre dans le mot jusqu'à la position donnée
      */
@@ -334,7 +334,7 @@ export class Wordle {
     }
 
     /**
-     * 
+     *
      * stop le jeu et affiche le score
      */
     printScore(msg) {
@@ -348,20 +348,25 @@ export class Wordle {
     }
 
     /**
-     * 
+     *
      * Cree le boutton de definition
      */
-    wiktionarySource() {
+    larousseDefinition() {
         const button = document.createElement('button');
-        button.textContent = 'Definition';
-        button.onclick = () => window.open(`https://fr.wiktionary.org/wiki/${this.#state.secret}`, '_blank');
+        button.textContent = 'Définition';
+        button.addEventListener('click', () => {
+            const url = new URL(
+              `https://www.larousse.fr/dictionnaires/francais/${encodeURIComponent(this.#state.secret)}`
+            );
+            window.open(url.toString(), '_blank');
+          });
         const container = document.getElementById('button-container');
         container.appendChild(button)
     }
 
     /**
-     * 
-     * @param {boolean} gagne 
+     *
+     * @param {boolean} gagne
      * creer un bouton pour partager le score sur twitter (pas X)
      */
     shareScoreOnTwitter(gagne) {
@@ -381,7 +386,7 @@ export class Wordle {
     }
 
     /**
-     * 
+     *
      * creer un bouton pour rejouer
      */
     reload() {
@@ -394,7 +399,7 @@ export class Wordle {
     }
 
     /**
-     * 
+     *
      * dessine la grille et lance le jeu
      */
     startGame() {
@@ -407,7 +412,7 @@ export class Wordle {
     }
 
     /**
-     * Met fin a la partie 
+     * Met fin a la partie
      */
     endGame() {
         this.#isEnd = true;
@@ -419,7 +424,7 @@ export class Wordle {
         this.#mode.stop();
         this.printScore(message);
         this.reload();
-        this.wiktionarySource();
+        this.larousseDefinition();
         this.shareScoreOnTwitter(this.#gagne);
     }
 }
